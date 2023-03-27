@@ -1,9 +1,11 @@
+import { IBoardParams } from "../types/types";
+
 export enum APPRoute {
   main = '/',
   winners = '/winners',
 }
 
-export const boardSize = [
+export const baseLevelsOptions: IBoardParams[] = [
   {
     col: 8,
     row: 8,
