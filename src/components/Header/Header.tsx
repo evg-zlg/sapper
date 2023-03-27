@@ -4,6 +4,7 @@ import { APPRoute } from '../../const/const';
 import { Container } from '../Container';
 
 const HeaderStyled = styled.header`
+  margin: 0 0 10px 0;
   padding: 0 5px;
   height: 80px;
   border-bottom: 1px solid var(--primary-accent-color);
