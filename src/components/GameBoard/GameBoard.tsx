@@ -1,29 +1,51 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { boardSize } from "../../const/const";
-import { createGrid } from "./utils";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { boardSize } from '../../const/const';
+import { ICell } from '../../types/types';
+import { Cell } from './Cell';
+import { createGrid } from './utils';
 
-interface IBoardProps {
+interface ISizeParams {
   col: number;
   row: number;
 }
-const Board = styled.section<IBoardProps>`
+
+interface IGameGrid extends ISizeParams {
+  cells: ICell[][];
+}
+const Board = styled.section<ISizeParams>`
+  width: fit-content;
+  margin: 0 auto;
   border-radius: 5px;
   border: 1px solid var(--primary-dark-color);
+  display: grid;
+  grid-template: repeat(${(props) => props.col}, 30px) / repeat(
+      ${(props) => props.row},
+      30px
+    );
 `;
 
 function GameBoard() {
-  const [size] = useState(boardSize[0]);
-  const [gameGrid] = useState(() => createGrid(size));
+  const [gameGrid] = useState<IGameGrid>(() => ({
+    col: boardSize[0].col,
+    row: boardSize[0].row,
+    cells: createGrid(boardSize[0]),
+  }));
 
-  useEffect( () => {
+  useEffect(() => {
     console.log(gameGrid);
-  }, [size]);
+  }, [gameGrid]);
 
   return (
     <>
       <header>time, button for restart, and someone else</header>
-      <Board col={size.col} row={size.row} />
+      <Board col={gameGrid.col} row={gameGrid.row}>
+        {gameGrid?.cells.map((column, i) =>
+          column.map((cell, j) => (
+            <Cell key={Math.random()} currentIndex={{ i, j }} cell={cell} />
+          )),
+        )}
+      </Board>
     </>
   );
 }

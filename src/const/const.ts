@@ -7,16 +7,16 @@ export const boardSize = [
   {
     col: 8,
     row: 8,
-    minutes: 10,
+    bombs: 10,
   },
   {
     col: 16,
     row: 16,
-    minutes: 40,
+    bombs: 40,
   },
   {
-    col: 32,
-    row: 16,
-    minutes: 100,
+    col: 16,
+    row: 32,
+    bombs: 100,
   },
 ];
