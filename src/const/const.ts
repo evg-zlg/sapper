@@ -1,4 +1,4 @@
-import { IBoardParams } from '../types/types';
+import { IBoardParams, ICell } from '../types/types';
 
 export enum APPRoute {
   main = '/',
@@ -38,3 +38,9 @@ export const palette = new Map([
   [7, '#000000'],
   [8, '#FFFFFF'],
 ]);
+
+export const initCell: ICell = {
+  content: 0,
+  status: 'closed',
+  position: { i: 0, j: 0 },
+};

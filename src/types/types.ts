@@ -10,6 +10,10 @@ export type TCellStatus =
 export interface ICell {
   status: TCellStatus;
   content: number;
+  position: {
+    i: number;
+    j: number;
+  }
 }
 
 export type TLevelType = 'easy' | 'normal' | 'hard' | 'custom';

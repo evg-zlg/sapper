@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { openArea } from '../../components/GameBoard/utils';
+import { openArea } from '../../components/GameBoard/gameLogic';
 import { levels } from '../../const/const';
 import { IBoardParams, ICell, IGameParams, TGamePhase, TLevelType } from '../../types/types';
+import { RootState } from '../rootReducer';
 
 interface initialStateProps extends IGameParams {
   phase: TGamePhase;
@@ -22,8 +23,9 @@ export const gameSlice = createSlice({
     changeCells(state, actions: PayloadAction<ICell[][]>) {
       state.cells = actions.payload;
     },
-    updateOneCell(state, actions: PayloadAction<{cell: ICell, i: number, j: number}>) {
-      const {i, j, cell} = actions.payload;
+    updateOneCell(state, actions: PayloadAction<ICell>) {
+      const cell = actions.payload;
+      const {i, j} = cell.position;
       state.cells[i][j] = cell;
     },
     changeLevel(state, actions: PayloadAction<{currentLevel: TLevelType, boardParams: IBoardParams}>) {
@@ -36,6 +38,9 @@ export const gameSlice = createSlice({
   },
 });
 
+export const selectState = (state: RootState) => state.gameState;
+
 export const { changeCells, changePhase, changeLevel, updateOneCell } = gameSlice.actions;
 
 export const gameState = gameSlice.reducer;
+

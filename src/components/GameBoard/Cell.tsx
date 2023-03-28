@@ -6,19 +6,16 @@ import { ICell } from '../../types/types';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { changePhase, updateOneCell } from '../../store/reducers/gameSlice';
 import { palette } from '../../const/const';
-import { openArea } from './utils';
+import { openArea } from './gameLogic';
 
 interface ICellProps {
-  currentIndex: {
-    i: number;
-    j: number;
-  };
-  setClickAddress: Dispatch<
-    SetStateAction<{
-      i: number;
-      j: number;
-    } | null>
-  >;
+  // setClickPosition: Dispatch<
+  //   SetStateAction<{
+  //     i: number;
+  //     j: number;
+  //   }>
+  // >;
+  clickCellHandle: (cell: ICell) => void;
   cell: ICell;
 }
 
@@ -47,32 +44,12 @@ const CellStyled = styled.button<ICellStyled>`
   ${(props) => (props.status === 'closed' ? ClosedCellStyles : OpenCellStyles)}
 `;
 
-function Cell({ setClickAddress, cell, currentIndex }: ICellProps) {
-  const { phase, cells } = useAppSelector((state) => state.gameState);
+function Cell({ cell, clickCellHandle }: ICellProps) {
+  const { phase } = useAppSelector((state) => state.gameState);
   const dispatch = useAppDispatch();
 
-  const clickCellHandle = () => {
-    if (phase === 'lost' || phase === 'win') {
-      return;
-    }
-
-    setClickAddress(currentIndex);
-
-    if (phase === 'new') {
-      dispatch(changePhase('play'));
-      if (cell.content === 0) {
-        dispatch(
-          updateOneCell({ cell: { ...cell, status: 'open' }, ...currentIndex }),
-        );
-      } else {
-        dispatch(
-          updateOneCell({
-            cell: { ...cell, status: 'around-bombs' },
-            ...currentIndex,
-          }),
-        );
-      }
-    }
+  const clickButtonHandle = () => {
+    clickCellHandle(cell);
 
   };
 
@@ -81,9 +58,10 @@ function Cell({ setClickAddress, cell, currentIndex }: ICellProps) {
       status={cell.status}
       digit={cell.content}
       type="button"
-      onClick={clickCellHandle}
+      onClick={clickButtonHandle}
     >
-      {cell.status === 'around-bombs' && cell.content !== 0 ? cell.content : ''}
+      {/* {cell.status === 'around-bombs' && cell.content !== 0 ? cell.content : ''} */}
+      {cell.content === 0 ? '' : cell.content}
     </CellStyled>
   );
 }

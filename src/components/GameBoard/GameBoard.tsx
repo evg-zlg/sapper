@@ -1,11 +1,16 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Cell } from './Cell';
 import { GameMenu } from './GameMenu';
-import { fillGrid, createInitGrid, defineStatusCell, openArea } from './utils';
+import { createInitGrid, fillGrid, openArea } from './gameLogic';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
-import { changeCells, changePhase, updateOneCell } from '../../store/reducers/gameSlice';
+import {
+  changeCells,
+  changePhase,
+  selectState,
+} from '../../store/reducers/gameSlice';
+
 import { ICell } from '../../types/types';
 
 interface IBoardStyledProps {
@@ -25,46 +30,63 @@ const Board = styled.section<IBoardStyledProps>`
 `;
 
 function GameBoard() {
-  const [clickAddress, setClickAddress] = useState<{i: number, j: number} | null>(null);
+  // const [needUpdateCells, setNeedUpdateCells] = useState(false);
+  const [currentCell, setCurrentCell] = useState<ICell | null>(null);
 
   const dispatch = useAppDispatch();
-  const { phase, boardParams, cells, currentLevel } = useAppSelector(
-    (state) => state.gameState,
-  );
+  const { phase, boardParams, cells, currentLevel } =
+    useAppSelector(selectState);
 
-  const startNewGame = () => {
-    const gameGrid = createInitGrid({ ...boardParams });
-    dispatch(changeCells(gameGrid));
+  const prepareNewGame = () => {
+    const initGrid = createInitGrid({ ...boardParams });
+    dispatch(changeCells(initGrid));
+  };
+
+  const startNewGame = (cell: ICell) => {
+    const filledGrid: ICell[][] = fillGrid({
+      source: cells,
+      bombs: boardParams.bombs,
+      currentCellPosition: cell.position,
+    });
+    dispatch(changePhase('play'));
+    const {i, j} = cell.position;
+    if (filledGrid[i][j].content === 0) {
+      dispatch(changeCells(openArea(filledGrid)));
+    } else {
+      dispatch(changeCells(filledGrid));
+    }
+  };
+
+  const makeMove = (cell: ICell) => {
+
+  }
+
+  const clickCellHandle = (cell: ICell) => {
+    setCurrentCell(cell);
+    if (phase === 'new') {
+      startNewGame(cell);
+    }
+    if (phase === 'play' && cell.status === 'closed') {
+      makeMove(cell);
+    }
   };
 
   useEffect(() => {
     if (phase === 'new') {
-      startNewGame();
-      // return;
+      prepareNewGame();
     }
-    // if (phase === 'play' && clickAddress !== null) {
-    //   const newCells = fillGrid({
-    //     source: cells,
-    //     bombs: boardParams.bombs,
-    //     excludeAddress: clickAddress,
-    //   });
-    //   dispatch(changePhase('process'));
-    //   dispatch(changeCells(newCells));
-    //   // dispatch(changeCells(openArea(cells, clickAddress.i, clickAddress.j)));
-    // }
-  }, [phase, currentLevel]);
+  }, []);
 
   return (
     <>
       <GameMenu />
       <Board col={boardParams.col} row={boardParams.row}>
-        {cells.map((column, i) =>
-          column.map((cell, j) => (
+        {cells.map((column) =>
+          column.map((cell) => (
             <Cell
               key={Math.random()}
-              currentIndex={{ i, j }}
               cell={cell}
-              setClickAddress={setClickAddress}
+              clickCellHandle={clickCellHandle}
             />
           )),
         )}

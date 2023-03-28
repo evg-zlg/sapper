@@ -1,3 +1,4 @@
+import { initCell } from '../../const/const';
 import {
   IBoardParams,
   ICell,
@@ -98,17 +99,26 @@ function convertArray(col: number, row: number, source: ICell[]): ICell[][] {
   for (let i = 0; i < col; i += 1) {
     result.push([]);
     for (let j = 0; j < row; j += 1) {
-      result[i].push(source[i * row + j]);
+      result[i].push({...source[i * row + j], position: {i, j}});
     }
   }
 
   return result;
 }
 
+function addOpenCell(position: {i: number, j: number}, source: ICell[][]) {
+  const {i, j} = position;
+  const grid: ICell[][] = source.map((arr) => arr.slice());
+  const status: TCellStatus = grid[i][j].content === 0 ? 'open' : 'around-bombs';
+  grid[i][j] = {...grid[i][j], status}
+
+  return grid;
+}
+
 interface IFillGridProps {
   source: ICell[][];
   bombs: number;
-  excludeAddress: {
+  currentCellPosition: {
     i: number;
     j: number;
   };
@@ -117,14 +127,15 @@ interface IFillGridProps {
 export function fillGrid({
   source,
   bombs,
-  excludeAddress,
+  currentCellPosition,
 }: IFillGridProps): ICell[][] {
-  const excludeIndex = excludeAddress.i * source[0].length + excludeAddress.j;
+  const excludeIndex = currentCellPosition.i * source[0].length + currentCellPosition.j;
   const oneDimArray = source.flat();
   const arrayWithBombs = addBombsInArray(oneDimArray, bombs, excludeIndex);
   const grid = convertArray(source.length, source[0].length, arrayWithBombs);
+  const gridWithOpenCell = addOpenCell(currentCellPosition, grid);
 
-  const filledGrid = addDigitsInGrid(grid);
+  const filledGrid = addDigitsInGrid(gridWithOpenCell);
 
   return filledGrid;
 }
@@ -138,7 +149,7 @@ export function createInitGrid({ col, row }: ICreateInitGrid): ICell[][] {
   const count = col * row;
 
   for (let i = 0; i < count; i += 1) {
-    result.push({ content: 0, status: 'closed' });
+    result.push( initCell );
   }
 
   return convertArray(col, row, result);
@@ -204,7 +215,11 @@ function needOpenAround(grid: ICell[][], i: number, j: number): boolean {
     return true;
   }
   // left-top
-  if (grid[i - 1] && grid[i - 1][j - 1] && grid[i - 1][j - 1].status === 'closed') {
+  if (
+    grid[i - 1] &&
+    grid[i - 1][j - 1] &&
+    grid[i - 1][j - 1].status === 'closed'
+  ) {
     return true;
   }
 
@@ -276,24 +291,24 @@ function openAround(source: ICell[][], n: number, m: number) {
   return grid;
 }
 
-export function openArea(source: ICell[][], i: number, j: number) {
-  let grid: ICell[][] = source.map((arr) => arr.slice());
+export function openArea(source: ICell[][]) {
+  let grid: ICell[][] = source.map((arr) => arr.map((el) => el));
   let allOpened = false;
-
-  console.log('source', source);
-
+  
   while (!allOpened) {
-    grid = openAround(grid, i, j);
-    
     let wasOpen = false;
-    
+
     for (let c = 0; c < source.length; c += 1) {
       for (let r = 0; r < source[0].length; r += 1) {
-        if (needOpenAround(grid, c, r)) {
+        if (
+          grid[c][r].status === 'open' &&
+          grid[c][r].content === 0 &&
+          needOpenAround(grid, c, r)
+        ) {
           grid = openAround(grid, c, r);
           wasOpen = true;
         }
-      } 
+      }
     }
 
     allOpened = !wasOpen;
