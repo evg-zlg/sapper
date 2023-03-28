@@ -1,4 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import { levels } from '../../const/const';
+import { TLevelType } from '../../types/types';
+import { getBoardParamsByLevelType } from './utils';
+
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { changeLevel, changePhase } from '../../store/reducers/gameSlice';
 
 const Menu = styled.menu`
   margin: 0 auto 10px;
@@ -13,13 +19,33 @@ const Button = styled.button`
 `;
 
 function GameMenu() {
+  const dispatch = useAppDispatch();
+  const { currentLevel } = useAppSelector((state) => state.gameState);
+
+  const clickLevelHandle = (levelType: TLevelType) => {
+    if (levelType !== currentLevel) {
+      const boardParams = getBoardParamsByLevelType(levelType, levels);
+      dispatch(changeLevel({currentLevel: levelType, boardParams}));
+      dispatch(changePhase('new'));
+    }
+  };
+
   return (
     <Menu>
-      <Button type="button">easy</Button>
-      <Button type="button">normal</Button>
-      <Button type="button">hard</Button>
+      <Button type="button" onClick={() => clickLevelHandle('easy')}>
+        easy
+      </Button>
+      <Button type="button" onClick={() => clickLevelHandle('normal')}>
+        normal
+      </Button>
+      <Button type="button" onClick={() => clickLevelHandle('hard')}>
+        hard
+      </Button>
+      <Button type="button" onClick={() => clickLevelHandle('custom')}>
+        custom
+      </Button>
     </Menu>
-  )
+  );
 }
 
 export { GameMenu };

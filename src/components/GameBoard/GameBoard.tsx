@@ -1,24 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { baseLevelsOptions } from '../../const/const';
-import { useLevelOptions } from '../../hooks/gameLevel';
-import { IBoardParams, ICell } from '../../types/types';
 import { Cell } from './Cell';
 import { GameMenu } from './GameMenu';
-import { createGrid } from './utils';
+import { fillGrid, createInitGrid, defineStatusCell, openArea } from './utils';
 
-interface ISizeParams {
+import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+import { changeCells, changePhase, updateOneCell } from '../../store/reducers/gameSlice';
+import { ICell } from '../../types/types';
+
+interface IBoardStyledProps {
   col: number;
   row: number;
 }
 
-interface IGameGrid extends ISizeParams {
-  cells: ICell[][];
-}
-const Board = styled.section<ISizeParams>`
+const Board = styled.section<IBoardStyledProps>`
   width: fit-content;
   margin: 0 auto;
-  /* border-radius: 5px; */
   border: 1px solid var(--primary-dark-color);
   display: grid;
   grid-template: repeat(${(props) => props.col}, 30px) / repeat(
@@ -28,19 +25,50 @@ const Board = styled.section<ISizeParams>`
 `;
 
 function GameBoard() {
-  const [levelOptions] = useLevelOptions(baseLevelsOptions[0]);
-  console.log('levelOptions:', levelOptions);
-  // const gameGrid = createGrid({col: levelOptions.col, row: levelOptions.});
+  const [clickAddress, setClickAddress] = useState<{i: number, j: number} | null>(null);
+
+  const dispatch = useAppDispatch();
+  const { phase, boardParams, cells, currentLevel } = useAppSelector(
+    (state) => state.gameState,
+  );
+
+  const startNewGame = () => {
+    const gameGrid = createInitGrid({ ...boardParams });
+    dispatch(changeCells(gameGrid));
+  };
+
+  useEffect(() => {
+    if (phase === 'new') {
+      startNewGame();
+      // return;
+    }
+    // if (phase === 'play' && clickAddress !== null) {
+    //   const newCells = fillGrid({
+    //     source: cells,
+    //     bombs: boardParams.bombs,
+    //     excludeAddress: clickAddress,
+    //   });
+    //   dispatch(changePhase('process'));
+    //   dispatch(changeCells(newCells));
+    //   // dispatch(changeCells(openArea(cells, clickAddress.i, clickAddress.j)));
+    // }
+  }, [phase, currentLevel]);
+
   return (
     <>
       <GameMenu />
-      {/* <Board col={gameGrid.col} row={gameGrid.row}>
-        {gameGrid?.cells.map((column, i) =>
+      <Board col={boardParams.col} row={boardParams.row}>
+        {cells.map((column, i) =>
           column.map((cell, j) => (
-            <Cell key={Math.random()} currentIndex={{ i, j }} cell={cell} />
+            <Cell
+              key={Math.random()}
+              currentIndex={{ i, j }}
+              cell={cell}
+              setClickAddress={setClickAddress}
+            />
           )),
         )}
-      </Board> */}
+      </Board>
     </>
   );
 }

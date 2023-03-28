@@ -1,10 +1,28 @@
+export type TCellStatus =
+  | 'closed'
+  | 'open'
+  | 'flag-icon'
+  | 'quest-icon'
+  | 'around-bombs'
+  | 'bomb-open'
+  | 'bomb-boom';
+
 export interface ICell {
-  status: 'closed' | 'open' | 'flag-icon' | 'bomb-icon' | 'around-bombs' | 'bomb-open' | 'bomb-boom';
-  bombInside: boolean;
+  status: TCellStatus;
+  content: number;
 }
 
-export interface IBoardParams {
+export type TLevelType = 'easy' | 'normal' | 'hard' | 'custom';
+
+export type TGamePhase = 'new' | 'play' | 'process' | 'lost' | 'win';
+
+export type IBoardParams = {
   col: number;
   row: number;
   bombs: number;
+};
+
+export interface IGameParams {
+  cells: ICell[][];
+  boardParams: IBoardParams;
 }
