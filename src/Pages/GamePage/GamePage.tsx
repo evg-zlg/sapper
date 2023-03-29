@@ -5,7 +5,6 @@ function GamePage() {
   return (
     <Container>
       <main>
-        <h1>Find all the bombs</h1>
         <GameBoard />
       </main>
     </Container>

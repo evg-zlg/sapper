@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { winnersState } from './reducers/winnersSlice';
+import { gameState } from './reducers/gameSlice';
 
 
 export const rootReducer = combineReducers({
   winnersState,
+  gameState,
 });
 
 const setupStore = () =>
