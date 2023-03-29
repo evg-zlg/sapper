@@ -2,7 +2,12 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Cell } from './Cell';
 import { GameMenu } from './GameMenu';
-import { createInitGrid, fillGrid, openArea } from './gameLogic';
+import {
+  createInitGrid,
+  defineNextStatusCell,
+  fillGrid,
+  openArea,
+} from './gameLogic';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import {
@@ -33,7 +38,6 @@ const GridTemplate = styled.div<IGridTemplateProps>`
       ${(props) => props.row},
       1fr
     );
-  
 `;
 
 function GameBoard() {
@@ -83,6 +87,15 @@ function GameBoard() {
     }
   };
 
+  const clickContextCellHandle = (cell: ICell) => {
+    if (phase !== 'lost' && phase !== 'win') {
+      const status = defineNextStatusCell(cell);
+      if (status !== null) {
+        dispatch(updateOneCell({ ...cell, status }));
+      }
+    }
+  };
+
   useEffect(() => {
     if (phase === 'new') {
       prepareNewGame();
@@ -106,6 +119,7 @@ function GameBoard() {
                     key={Math.random()}
                     cell={cell}
                     clickCellHandle={clickCellHandle}
+                    clickContextCellHandle={clickContextCellHandle}
                   />
                 )),
               )}

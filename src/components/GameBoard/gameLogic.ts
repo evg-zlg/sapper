@@ -106,16 +106,6 @@ function convertArray(col: number, row: number, source: ICell[]): ICell[][] {
   return result;
 }
 
-// function addOpenCell(position: { i: number; j: number }, source: ICell[][]) {
-//   const { i, j } = position;
-//   const grid: ICell[][] = source.map((arr) => arr.slice());
-//   const status: TCellStatus =
-//     grid[i][j].content === 0 ? 'open' : 'around-bombs';
-//   grid[i][j] = { ...grid[i][j], status };
-
-//   return grid;
-// }
-
 interface IFillGridProps {
   source: ICell[][];
   bombs: number;
@@ -331,20 +321,9 @@ export function openArea(source: ICell[][], cell: ICell) {
   return grid;
 }
 
-// export function defineStatusCell(
-//   grid: ICell[][],
-//   addressCell: { i: number; j: number },
-// ): TCellStatus {
-//   const { i, j } = addressCell;
-//   const cell = grid[i][j];
-
-//   if (cell.content === -1) {
-//     return 'bomb-boom';
-//   }
-
-//   if (cell.content > 0 && cell.content <= 8) {
-//     return 'around-bombs';
-//   }
-
-//   return 'open';
-// }
+export function defineNextStatusCell(cell: ICell): TCellStatus | null {
+  if (cell.status === 'closed') return 'flag-icon';
+  if (cell.status === 'flag-icon') return 'quest-icon';
+  if (cell.status === 'quest-icon') return 'closed';
+  return null;
+}

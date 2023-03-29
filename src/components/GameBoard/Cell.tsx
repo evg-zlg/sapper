@@ -1,23 +1,31 @@
-import styled, { css } from 'styled-components';
-import { ICell } from '../../types/types';
+import { MouseEvent, useEffect, useState } from 'react';
+import styled from 'styled-components';
+
+import { ICell, TCellStatus } from '../../types/types';
 import { palette } from '../../const/const';
 import { Frame } from './Frame';
 
-interface ICellProps {
-  clickCellHandle: (cell: ICell) => void;
-  cell: ICell;
+import bombIcon from './icons/bomb-icon.png';
+import boomIcon from './icons/boom-icon.png';
+import flagIcon from './icons/flag-icon.png';
+import questIcon from './icons/quest-icon.png';
+
+interface ICellFrame {
+  status: TCellStatus;
 }
 
-interface ICellStyled {
-  status: string;
-  digit: number;
-}
-
-const CellFrame = styled.div`
+const CellFrame = styled.div<ICellFrame>`
   border: 1px solid gray;
   display: flex;
   align-items: center;
+  background-color: ${(props) => props.status === 'bomb-boom' ? 'red' : 'inherit'};
 `;
+
+interface ICellStyled {
+  status: TCellStatus;
+  digit: number;
+  icon: string;
+}
 
 const CellStyled = styled.button<ICellStyled>`
   width: 20px;
@@ -28,29 +36,67 @@ const CellStyled = styled.button<ICellStyled>`
   align-items: center;
   user-select: none;
   font-size: 24px;
-  font-weight: 700;
-  background-color: inherit;
+  font-weight: 900;
+  background-color: ${(props) => props.status === 'bomb-boom' ? 'red' : 'inherit'};
+  background-image: url(${(props) => props.icon});
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: ${(props) => props.status === 'quest-icon' ? '70%' : '90%'};
   color: ${(props) => palette.get(props.digit) || 'inherit'};
 `;
 
-function Cell({ cell, clickCellHandle }: ICellProps) {
+interface ICellProps {
+  clickCellHandle: (cell: ICell) => void;
+  clickContextCellHandle: (cell: ICell) => void;
+  cell: ICell;
+}
+
+function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
+  const [icon, setIcon] = useState('');
+  const [showFrame, setShowFrame] = useState(true);
+
   const clickButtonHandle = () => {
     clickCellHandle(cell);
   };
 
+  const clickContextButtonHandle = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    clickContextCellHandle(cell);
+  }
+
+  useEffect(() => {
+    if (cell.status === 'flag-icon') setIcon(flagIcon);
+    if (cell.status === 'quest-icon') setIcon(questIcon);
+    if (cell.status === 'bomb-boom') {
+      setShowFrame(false);
+      setIcon(boomIcon);
+    };
+    if (cell.status === 'bomb-open') {
+      setShowFrame(false);
+      setIcon(bombIcon);
+    };
+    if (cell.status === 'open') {
+      setShowFrame(false);
+    };
+    if (cell.status === 'around-bombs') {
+      setShowFrame(false);
+    };
+  }, []);
+
   return (
-    <CellFrame >
-      <Frame type={cell.status === 'closed' ? 'outside' : 'none'}>
+    <CellFrame status={cell.status}>
+      <Frame type={showFrame ? 'outside' : 'none'}>
         <CellStyled
           status={cell.status}
           digit={cell.content}
+          icon={icon}
           type="button"
           onClick={clickButtonHandle}
+          onContextMenu={clickContextButtonHandle}
         >
           {cell.status === 'around-bombs' && cell.content !== 0
             ? cell.content
             : ''}
-          {cell.status === 'bomb-boom' && '0'}
         </CellStyled>
       </Frame>
     </CellFrame>
