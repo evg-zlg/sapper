@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Cell } from './Cell';
-import { GameMenu } from './GameMenu';
 import {
+  checkVictory,
   createInitGrid,
   defineNextStatusCell,
   fillGrid,
+  getCountFlags,
   openArea,
 } from './gameLogic';
 
@@ -15,10 +16,12 @@ import {
   changePhase,
   selectState,
   updateOneCell,
+  changeBombsLeft,
 } from '../../store/reducers/gameSlice';
 
 import { ICell } from '../../types/types';
 import { Frame } from './Frame';
+import { GamePanel } from './GamePanel';
 
 interface IGridTemplateProps {
   col: number;
@@ -26,9 +29,11 @@ interface IGridTemplateProps {
 }
 
 const Board = styled.section`
-  width: fit-content;
-  margin: 0 auto;
   padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: stretch;
   background-color: var(--bg-primery-color);
 `;
 
@@ -42,7 +47,7 @@ const GridTemplate = styled.div<IGridTemplateProps>`
 
 function GameBoard() {
   const dispatch = useAppDispatch();
-  const { phase, boardParams, cells } = useAppSelector(selectState);
+  const { phase, boardParams, cells, bombsLeft } = useAppSelector(selectState);
 
   const prepareNewGame = () => {
     const initGrid = createInitGrid({ ...boardParams });
@@ -50,6 +55,8 @@ function GameBoard() {
   };
 
   const startNewGame = (cell: ICell) => {
+    if (cell.status === 'flag-icon') return;
+
     const filledGrid: ICell[][] = fillGrid({
       source: cells,
       bombs: boardParams.bombs,
@@ -66,15 +73,29 @@ function GameBoard() {
   };
 
   const makeMove = (cell: ICell) => {
+    if (cell.status === 'flag-icon') return;
+
+    let isVictory = false;
+
     if (cell.content === -1) {
       dispatch(changePhase('lost'));
       dispatch(updateOneCell({ ...cell, status: 'bomb-boom' }));
     }
     if (cell.content === 0) {
-      dispatch(changeCells(openArea(cells, cell)));
+      const newCells = openArea(cells, cell);
+      dispatch(changeCells(newCells));
+      isVictory = checkVictory(newCells, bombsLeft, null);
     }
     if (cell.content > 0) {
       dispatch(updateOneCell({ ...cell, status: 'around-bombs' }));
+      isVictory = checkVictory(cells, bombsLeft, {
+        ...cell,
+        status: 'around-bombs',
+      });
+    }
+
+    if (isVictory) {
+      dispatch(changePhase('win'));
     }
   };
 
@@ -90,44 +111,60 @@ function GameBoard() {
   const clickContextCellHandle = (cell: ICell) => {
     if (phase !== 'lost' && phase !== 'win') {
       const status = defineNextStatusCell(cell);
+      let isVictory = false;
+
       if (status !== null) {
         dispatch(updateOneCell({ ...cell, status }));
+      }
+
+      let countFlags = getCountFlags(cells);
+      if (status === 'quest-icon') countFlags -= 1;
+      if (status === 'flag-icon') countFlags += 1;
+      dispatch(changeBombsLeft(boardParams.bombs - countFlags));
+
+      isVictory = checkVictory(
+        cells,
+        boardParams.bombs - countFlags,
+        status === null ? null : { ...cell, status: status || '' },
+      );
+      if (isVictory) {
+        dispatch(changePhase('win'));
       }
     }
   };
 
+  const restartGame = () => {
+    prepareNewGame();
+    dispatch(changePhase('new'));
+    dispatch(changeBombsLeft(boardParams.bombs));
+  };
+
   useEffect(() => {
-    if (phase === 'new') {
-      prepareNewGame();
-    }
-    if (phase === 'change-lvl') {
-      prepareNewGame();
-      dispatch(changePhase('new'));
+    if (phase === 'new' || phase === 'change-lvl') {
+      restartGame();
     }
   }, [phase]);
 
   return (
-    <>
-      <GameMenu />
-      <Frame type="outside">
-        <Board>
-          <Frame type="inside">
-            <GridTemplate col={boardParams.col} row={boardParams.row}>
-              {cells.map((column) =>
-                column.map((cell) => (
-                  <Cell
-                    key={cell.id}
-                    cell={cell}
-                    clickCellHandle={clickCellHandle}
-                    clickContextCellHandle={clickContextCellHandle}
-                  />
-                )),
-              )}
-            </GridTemplate>
-          </Frame>
-        </Board>
-      </Frame>
-    </>
+    <Frame type="outside">
+      <Board>
+        <GamePanel />
+        <Frame type="inside">
+          <GridTemplate col={boardParams.col} row={boardParams.row}>
+            {cells.map((column) =>
+              column.map((cell) => (
+                <Cell
+                  key={cell.id}
+                  cell={cell}
+                  clickCellHandle={clickCellHandle}
+                  clickContextCellHandle={clickContextCellHandle}
+                />
+              )),
+            )}
+          </GridTemplate>
+        </Frame>
+      </Board>
+    </Frame>
   );
 }
 

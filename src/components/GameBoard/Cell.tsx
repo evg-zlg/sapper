@@ -18,6 +18,7 @@ const CellFrame = styled.div<ICellFrame>`
   border: 1px solid gray;
   display: flex;
   align-items: center;
+  justify-content: center;
   background-color: ${(props) => props.status === 'bomb-boom' ? 'red' : 'inherit'};
 `;
 
@@ -55,8 +56,6 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
   const [icon, setIcon] = useState('');
   const [showFrame, setShowFrame] = useState(true);
 
-
-
   const clickButtonHandle = () => {
     clickCellHandle(cell);
   };
@@ -83,6 +82,11 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
     if (cell.status === 'around-bombs') {
       setShowFrame(false);
     };
+    if (cell.status === 'closed') {
+      setIcon('');
+      setShowFrame(true);
+    };
+
   }, [cell]);
 
   return (
