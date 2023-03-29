@@ -20,6 +20,8 @@ export type TLevelType = 'easy' | 'normal' | 'hard' | 'custom';
 
 export type TGamePhase = 'change-lvl' | 'new' | 'play' |  'lost' | 'win';
 
+export type TFrameType = 'inside' | 'outside' | 'none';
+
 export type IBoardParams = {
   col: number;
   row: number;
@@ -30,3 +32,4 @@ export interface IGameParams {
   cells: ICell[][];
   boardParams: IBoardParams;
 }
+

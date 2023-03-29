@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Cell } from './Cell';
 import { GameMenu } from './GameMenu';
@@ -13,30 +13,32 @@ import {
 } from '../../store/reducers/gameSlice';
 
 import { ICell } from '../../types/types';
+import { Frame } from './Frame';
 
-interface IBoardStyledProps {
+interface IGridTemplateProps {
   col: number;
   row: number;
 }
 
-const Board = styled.section<IBoardStyledProps>`
+const Board = styled.section`
   width: fit-content;
   margin: 0 auto;
-  border: 1px solid var(--primary-dark-color);
+  padding: 15px;
+  background-color: var(--bg-primery-color);
+`;
+
+const GridTemplate = styled.div<IGridTemplateProps>`
   display: grid;
-  grid-template: repeat(${(props) => props.col}, 30px) / repeat(
+  grid-template: repeat(${(props) => props.col}, 1fr) / repeat(
       ${(props) => props.row},
-      30px
+      1fr
     );
+  
 `;
 
 function GameBoard() {
-  // const [needUpdateCells, setNeedUpdateCells] = useState(false);
-  const [currentCell, setCurrentCell] = useState<ICell | null>(null);
-
   const dispatch = useAppDispatch();
-  const { phase, boardParams, cells } =
-    useAppSelector(selectState);
+  const { phase, boardParams, cells } = useAppSelector(selectState);
 
   const prepareNewGame = () => {
     const initGrid = createInitGrid({ ...boardParams });
@@ -73,7 +75,6 @@ function GameBoard() {
   };
 
   const clickCellHandle = (cell: ICell) => {
-    setCurrentCell(cell);
     if (phase === 'new' || phase === 'change-lvl') {
       startNewGame(cell);
     }
@@ -95,17 +96,23 @@ function GameBoard() {
   return (
     <>
       <GameMenu />
-      <Board col={boardParams.col} row={boardParams.row}>
-        {cells.map((column) =>
-          column.map((cell) => (
-            <Cell
-              key={Math.random()}
-              cell={cell}
-              clickCellHandle={clickCellHandle}
-            />
-          )),
-        )}
-      </Board>
+      <Frame type="outside">
+        <Board>
+          <Frame type="inside">
+            <GridTemplate col={boardParams.col} row={boardParams.row}>
+              {cells.map((column) =>
+                column.map((cell) => (
+                  <Cell
+                    key={Math.random()}
+                    cell={cell}
+                    clickCellHandle={clickCellHandle}
+                  />
+                )),
+              )}
+            </GridTemplate>
+          </Frame>
+        </Board>
+      </Frame>
     </>
   );
 }

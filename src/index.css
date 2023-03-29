@@ -1,19 +1,11 @@
 :root {
   --primary-light-color: #fffefc;
   --primary-dark-color: #040404;
-  --bg-link-color: rgba(167, 167, 167, 0.25);
   --primary-accent-color: #e16259;
-  --shadow-light-color: rgba(167, 167, 167, 0.8);
-  /* --primary-text-light-color: rgba(255, 255, 252, 0.9);  */
-  
-  --wrong-color: #e32a1d;
-  --primary-accent-light-color: #e7c5c331;
-  --hover-color: #c0443b;
-  --right-color: rgb(53, 136, 53);
-  --right-light-color: rgba(53, 136, 53, 0.5);
-  --right-very-light-color: rgba(198, 218, 198, 0.185);
-  --drop-shadow-color: rgba(0, 0, 0, 0.3);
-  
+  --border-primery-color: rgb(241, 241, 241);
+  --border-secondary-color: rgb(128, 128, 128);
+  --bg-primery-color:rgb(192, 192, 192);
+
 }
 
 * {
@@ -23,6 +15,6 @@
 }
 
 body {
-  background-color: var(--primary-light-color);
+  background-color: var(--bg-primery-color);
   color: var(--primary-dark-color);
 }
