@@ -26,7 +26,7 @@ const noneBorder = css`
 const FrameStyled = styled.div<IFrameStyled>`
   width: fit-content;
   height: fit-content;
-  margin: auto auto;
+  /* margin: auto auto; */
   border-radius: 2px;
   border-width: 4px;
   border-style: solid;

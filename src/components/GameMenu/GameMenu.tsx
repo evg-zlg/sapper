@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { levels } from '../../const/const';
 import { TLevelType } from '../../types/types';
-import { getBoardParamsByLevelType } from './gameLogic';
+import { getBoardParamsByLevelType } from '../GameBoard/gameLogic';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { changeLevel, changePhase } from '../../store/reducers/gameSlice';
 
 const Menu = styled.menu`
-  margin: 0 auto 10px;
+  margin: 0 auto;
   width: fit-content;
   display: flex;
   gap: 20px;

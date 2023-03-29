@@ -140,7 +140,7 @@ export function createInitGrid({ col, row }: ICreateInitGrid): ICell[][] {
   const count = col * row;
 
   for (let i = 0; i < count; i += 1) {
-    result.push({...initCell, id: i});
+    result.push({ ...initCell, id: i });
   }
 
   return convertArray(col, row, result);
@@ -223,56 +223,72 @@ function openAround(source: ICell[][], n: number, m: number) {
   const j = m;
 
   // top
-  if (grid[i - 1] && grid[i - 1][j]) {
+  if (grid[i - 1] && grid[i - 1][j] && grid[i - 1][j].status !== 'flag-icon') {
     grid[i - 1][j] = {
       ...grid[i - 1][j],
       status: grid[i - 1][j].content === 0 ? 'open' : 'around-bombs',
     };
   }
   // top-right
-  if (grid[i - 1] && grid[i - 1][j + 1]) {
+  if (
+    grid[i - 1] &&
+    grid[i - 1][j + 1] &&
+    grid[i - 1][j + 1].status !== 'flag-icon'
+  ) {
     grid[i - 1][j + 1] = {
       ...grid[i - 1][j + 1],
       status: grid[i - 1][j + 1].content === 0 ? 'open' : 'around-bombs',
     };
   }
   // right
-  if (grid[i][j + 1]) {
+  if (grid[i][j + 1] && grid[i][j + 1].status !== 'flag-icon') {
     grid[i][j + 1] = {
       ...grid[i][j + 1],
       status: grid[i][j + 1].content === 0 ? 'open' : 'around-bombs',
     };
   }
   // right - bottom
-  if (grid[i + 1] && grid[i + 1][j + 1]) {
+  if (
+    grid[i + 1] &&
+    grid[i + 1][j + 1] &&
+    grid[i + 1][j + 1].status !== 'flag-icon'
+  ) {
     grid[i + 1][j + 1] = {
       ...grid[i + 1][j + 1],
       status: grid[i + 1][j + 1].content === 0 ? 'open' : 'around-bombs',
     };
   }
   // bottom
-  if (grid[i + 1] && grid[i + 1][j]) {
+  if (grid[i + 1] && grid[i + 1][j] && grid[i + 1][j].status !== 'flag-icon') {
     grid[i + 1][j] = {
       ...grid[i + 1][j],
       status: grid[i + 1][j].content === 0 ? 'open' : 'around-bombs',
     };
   }
   // left-bottom
-  if (grid[i + 1] && grid[i + 1][j - 1]) {
+  if (
+    grid[i + 1] &&
+    grid[i + 1][j - 1] &&
+    grid[i + 1][j - 1].status !== 'flag-icon'
+  ) {
     grid[i + 1][j - 1] = {
       ...grid[i + 1][j - 1],
       status: grid[i + 1][j - 1].content === 0 ? 'open' : 'around-bombs',
     };
   }
   // left
-  if (grid[i][j - 1]) {
+  if (grid[i][j - 1] && grid[i][j - 1].status !== 'flag-icon') {
     grid[i][j - 1] = {
       ...grid[i][j - 1],
       status: grid[i][j - 1].content === 0 ? 'open' : 'around-bombs',
     };
   }
   // left-top
-  if (grid[i - 1] && grid[i - 1][j - 1]) {
+  if (
+    grid[i - 1] &&
+    grid[i - 1][j - 1] &&
+    grid[i - 1][j - 1].status !== 'flag-icon'
+  ) {
     grid[i - 1][j - 1] = {
       ...grid[i - 1][j - 1],
       status: grid[i - 1][j - 1].content === 0 ? 'open' : 'around-bombs',
@@ -326,4 +342,43 @@ export function defineNextStatusCell(cell: ICell): TCellStatus | null {
   if (cell.status === 'flag-icon') return 'quest-icon';
   if (cell.status === 'quest-icon') return 'closed';
   return null;
+}
+
+export function getCountFlags(cells: ICell[][]): number {
+  let result = 0;
+  for (let i = 0; i < cells.length; i += 1) {
+    for (let j = 0; j < cells.length; j += 1) {
+      if (cells[i][j].status === 'flag-icon') {
+        result += 1;
+      }
+    }
+  }
+  return result;
+}
+
+export function checkVictory(
+  cells: ICell[][],
+  bombsLeft: number,
+  lastOpenCell: ICell | null,
+): boolean {
+
+  if (bombsLeft !== 0) return false;
+
+  for (let i = 1; i < cells.length; i += 1) {
+    for (let j = 1; j < cells.length; j += 1) {
+      let cell = cells[i][j];
+      if (lastOpenCell !== null && cells[i][j].id === lastOpenCell.id) {
+        cell = lastOpenCell;
+      }
+
+      if (cell.content === -1 && cell.status !== 'flag-icon') {
+        return false;
+      }
+      if (cell.status === 'closed' || cell.status === 'quest-icon') {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }
