@@ -1,20 +1,8 @@
-import { Dispatch, SetStateAction } from 'react';
-
 import styled, { css } from 'styled-components';
 import { ICell } from '../../types/types';
-
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { changePhase, updateOneCell } from '../../store/reducers/gameSlice';
 import { palette } from '../../const/const';
-import { openArea } from './gameLogic';
 
 interface ICellProps {
-  // setClickPosition: Dispatch<
-  //   SetStateAction<{
-  //     i: number;
-  //     j: number;
-  //   }>
-  // >;
   clickCellHandle: (cell: ICell) => void;
   cell: ICell;
 }
@@ -45,12 +33,9 @@ const CellStyled = styled.button<ICellStyled>`
 `;
 
 function Cell({ cell, clickCellHandle }: ICellProps) {
-  const { phase } = useAppSelector((state) => state.gameState);
-  const dispatch = useAppDispatch();
 
   const clickButtonHandle = () => {
     clickCellHandle(cell);
-
   };
 
   return (
@@ -60,8 +45,8 @@ function Cell({ cell, clickCellHandle }: ICellProps) {
       type="button"
       onClick={clickButtonHandle}
     >
-      {/* {cell.status === 'around-bombs' && cell.content !== 0 ? cell.content : ''} */}
-      {cell.content === 0 ? '' : cell.content}
+      {cell.status === 'around-bombs' && cell.content !== 0 ? cell.content : ''}
+      {/* {cell.content === 0 ? '' : cell.content} */}
     </CellStyled>
   );
 }

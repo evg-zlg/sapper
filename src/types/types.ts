@@ -18,7 +18,7 @@ export interface ICell {
 
 export type TLevelType = 'easy' | 'normal' | 'hard' | 'custom';
 
-export type TGamePhase = 'new' | 'play' | 'process' | 'lost' | 'win';
+export type TGamePhase = 'change-lvl' | 'new' | 'play' |  'lost' | 'win';
 
 export type IBoardParams = {
   col: number;

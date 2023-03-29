@@ -25,6 +25,7 @@ export const gameSlice = createSlice({
     },
     updateOneCell(state, actions: PayloadAction<ICell>) {
       const cell = actions.payload;
+      console.log('cell in slice', cell)
       const {i, j} = cell.position;
       state.cells[i][j] = cell;
     },

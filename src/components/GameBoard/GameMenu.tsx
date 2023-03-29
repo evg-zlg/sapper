@@ -26,7 +26,7 @@ function GameMenu() {
     if (levelType !== currentLevel) {
       const boardParams = getBoardParamsByLevelType(levelType, levels);
       dispatch(changeLevel({currentLevel: levelType, boardParams}));
-      dispatch(changePhase('new'));
+      dispatch(changePhase('change-lvl'));
     }
   };
 

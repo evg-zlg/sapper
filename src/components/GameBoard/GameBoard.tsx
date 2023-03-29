@@ -9,6 +9,7 @@ import {
   changeCells,
   changePhase,
   selectState,
+  updateOneCell,
 } from '../../store/reducers/gameSlice';
 
 import { ICell } from '../../types/types';
@@ -34,7 +35,7 @@ function GameBoard() {
   const [currentCell, setCurrentCell] = useState<ICell | null>(null);
 
   const dispatch = useAppDispatch();
-  const { phase, boardParams, cells, currentLevel } =
+  const { phase, boardParams, cells } =
     useAppSelector(selectState);
 
   const prepareNewGame = () => {
@@ -49,21 +50,31 @@ function GameBoard() {
       currentCellPosition: cell.position,
     });
     dispatch(changePhase('play'));
-    const {i, j} = cell.position;
+    const { i, j } = cell.position;
     if (filledGrid[i][j].content === 0) {
-      dispatch(changeCells(openArea(filledGrid)));
+      dispatch(changeCells(openArea(filledGrid, filledGrid[i][j])));
     } else {
       dispatch(changeCells(filledGrid));
+      dispatch(updateOneCell({ ...filledGrid[i][j], status: 'around-bombs' }));
     }
   };
 
   const makeMove = (cell: ICell) => {
-
-  }
+    if (cell.content === -1) {
+      dispatch(changePhase('lost'));
+      dispatch(updateOneCell({ ...cell, status: 'bomb-boom' }));
+    }
+    if (cell.content === 0) {
+      dispatch(changeCells(openArea(cells, cell)));
+    }
+    if (cell.content > 0) {
+      dispatch(updateOneCell({ ...cell, status: 'around-bombs' }));
+    }
+  };
 
   const clickCellHandle = (cell: ICell) => {
     setCurrentCell(cell);
-    if (phase === 'new') {
+    if (phase === 'new' || phase === 'change-lvl') {
       startNewGame(cell);
     }
     if (phase === 'play' && cell.status === 'closed') {
@@ -75,7 +86,11 @@ function GameBoard() {
     if (phase === 'new') {
       prepareNewGame();
     }
-  }, []);
+    if (phase === 'change-lvl') {
+      prepareNewGame();
+      dispatch(changePhase('new'));
+    }
+  }, [phase]);
 
   return (
     <>
