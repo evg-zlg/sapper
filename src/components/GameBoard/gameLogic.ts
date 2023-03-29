@@ -140,7 +140,7 @@ export function createInitGrid({ col, row }: ICreateInitGrid): ICell[][] {
   const count = col * row;
 
   for (let i = 0; i < count; i += 1) {
-    result.push(initCell);
+    result.push({...initCell, id: i});
   }
 
   return convertArray(col, row, result);

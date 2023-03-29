@@ -40,6 +40,7 @@ export const palette = new Map([
 ]);
 
 export const initCell: ICell = {
+  id: 0,
   content: 0,
   status: 'closed',
   position: { i: 0, j: 0 },

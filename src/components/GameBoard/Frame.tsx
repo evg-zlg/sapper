@@ -38,17 +38,10 @@ const FrameStyled = styled.div<IFrameStyled>`
 interface IFrame {
   type: TFrameType;
   children: ReactElement;
-  // clickHandler?: () => void;
 }
 
 function Frame({ type, children }: IFrame) {
   return <FrameStyled type={type}>{children}</FrameStyled>;
 }
-
-// Frame.defaultProps  = {
-//   clickHandler: () => {
-//     // do nothing
-//   }
-// }
 
 export { Frame };

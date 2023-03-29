@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Cell } from './Cell';
 import { GameMenu } from './GameMenu';
@@ -116,7 +116,7 @@ function GameBoard() {
               {cells.map((column) =>
                 column.map((cell) => (
                   <Cell
-                    key={Math.random()}
+                    key={cell.id}
                     cell={cell}
                     clickCellHandle={clickCellHandle}
                     clickContextCellHandle={clickContextCellHandle}

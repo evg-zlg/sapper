@@ -8,6 +8,7 @@ export type TCellStatus =
   | 'bomb-boom';
 
 export interface ICell {
+  id: number;
   status: TCellStatus;
   content: number;
   position: {

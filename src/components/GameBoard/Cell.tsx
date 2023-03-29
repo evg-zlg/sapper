@@ -55,6 +55,8 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
   const [icon, setIcon] = useState('');
   const [showFrame, setShowFrame] = useState(true);
 
+
+
   const clickButtonHandle = () => {
     clickCellHandle(cell);
   };
@@ -81,7 +83,7 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
     if (cell.status === 'around-bombs') {
       setShowFrame(false);
     };
-  }, []);
+  }, [cell]);
 
   return (
     <CellFrame status={cell.status}>
