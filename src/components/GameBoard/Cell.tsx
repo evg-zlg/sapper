@@ -10,9 +10,6 @@ import wrongBomb from './icons/wrong-bomb-icon.png';
 import flagIcon from './icons/flag-icon.png';
 import questIcon from './icons/quest-icon.png';
 
-// interface ICellFrame {
-//   status: TCellStatus;
-// }
 
 interface ICellStyled {
   status: TCellStatus;
@@ -75,6 +72,7 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
       setShowFrame(false);
     }
     if (cell.status === 'around-bombs') {
+      setIcon('');
       setShowFrame(false);
     }
     if (cell.status === 'wrong-bomb') {

@@ -347,7 +347,7 @@ export function defineNextStatusCell(cell: ICell): TCellStatus | null {
 export function getCountFlags(grid: ICell[][]): number {
   let result = 0;
   for (let i = 0; i < grid.length; i += 1) {
-    for (let j = 0; j < grid.length; j += 1) {
+    for (let j = 0; j < grid[i].length; j += 1) {
       if (grid[i][j].status === 'flag-icon') {
         result += 1;
       }
@@ -363,8 +363,8 @@ export function checkVictory(
 ): boolean {
   if (bombsLeft !== 0) return false;
 
-  for (let i = 1; i < grid.length; i += 1) {
-    for (let j = 1; j < grid.length; j += 1) {
+  for (let i = 0; i < grid.length; i += 1) {
+    for (let j = 0; j < grid[i].length; j += 1) {
       let cell = grid[i][j];
       if (lastOpenCell !== null && grid[i][j].id === lastOpenCell.id) {
         cell = lastOpenCell;
@@ -373,9 +373,9 @@ export function checkVictory(
       if (cell.content === -1 && cell.status !== 'flag-icon') {
         return false;
       }
-      if (cell.status === 'closed' || cell.status === 'quest-icon') {
-        return false;
-      }
+      // if (cell.status === 'closed' || cell.status === 'quest-icon') {
+      //   return false;
+      // }
     }
   }
 
@@ -385,30 +385,24 @@ export function checkVictory(
 export function openCellsAfterWin(source: ICell[][]): ICell[][] {
   const grid: ICell[][] = source.map((arr) => arr.slice());
 
-  for (let i = 1; i < grid.length; i += 1) {
-    for (let j = 1; j < grid.length; j += 1) {
+  for (let i = 0; i < grid.length; i += 1) {
+    for (let j = 0; j < grid[i].length; j += 1) {
       if (grid[i][j].content === 0) {
-        // console.log('grid[i][j] before', grid[i][j]);
         grid[i][j] = { ...grid[i][j], status: 'open' };
-        // console.log('grid[i][j] after', grid[i][j]);
       }
       if (grid[i][j].content > 0) {
-        // console.log('grid[i][j] before', grid[i][j]);
-
         grid[i][j] = { ...grid[i][j], status: 'around-bombs' };
-        // console.log('grid[i][j] after', grid[i][j]);
       }
     }
   }
 
-  // console.log(grid);
   return grid;
 }
 
 export function openBombAfterLost(source: ICell[][]): ICell[][] {
   const grid: ICell[][] = source.map((arr) => arr.slice());
-  for (let i = 1; i < grid.length; i += 1) {
-    for (let j = 1; j < grid.length; j += 1) {
+  for (let i = 0; i < grid.length; i += 1) {
+    for (let j = 0; j < grid[i].length; j += 1) {
       if (grid[i][j].content === -1 && grid[i][j].status !== 'bomb-boom') {
         grid[i][j] = { ...grid[i][j], status: 'bomb-open' };
       }

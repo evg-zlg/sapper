@@ -9,7 +9,6 @@ function useTimer() {
     const now = new Date();
     const letftTime = Math.trunc((now.valueOf() - startedTime.valueOf()) / 1000);
     setTimeLeft(letftTime);
-    console.log(now.valueOf(), startedTime.valueOf(), letftTime)
   };
 
   const startTimer = () => {

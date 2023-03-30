@@ -10,7 +10,7 @@ import {
   openArea,
   openBombAfterLost,
   openCellsAfterWin,
-} from './gameLogic';
+} from './utils';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import {
@@ -178,7 +178,7 @@ function GameBoard() {
       dispatch(changePhase('lost'));
       return;
     }
-    
+
     dispatch(changeTimeleft(timeLeft));
   }, [timeLeft]);
 
