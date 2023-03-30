@@ -6,9 +6,9 @@ import { palette } from '../../const/const';
 import { Frame } from './Frame';
 
 import bombIcon from './icons/bomb-icon.png';
-import boomIcon from './icons/boom-icon.png';
+// import boomIcon from './icons/boom-icon.png';
 import flagIcon from './icons/flag-icon.png';
-import questIcon from './icons/quest-icon.png';
+import questIcon from './icons/quest-icon2.png';
 
 interface ICellFrame {
   status: TCellStatus;
@@ -19,7 +19,8 @@ const CellFrame = styled.div<ICellFrame>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.status === 'bomb-boom' ? 'red' : 'inherit'};
+  background-color: ${(props) =>
+    props.status === 'bomb-boom' ? 'red' : 'inherit'};
 `;
 
 interface ICellStyled {
@@ -38,11 +39,12 @@ const CellStyled = styled.button<ICellStyled>`
   user-select: none;
   font-size: 24px;
   font-weight: 900;
-  background-color: ${(props) => props.status === 'bomb-boom' ? 'red' : 'inherit'};
+  background-color: ${(props) =>
+    props.status === 'bomb-boom' ? 'red' : 'inherit'};
   background-image: url(${(props) => props.icon});
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: ${(props) => props.status === 'quest-icon' ? '70%' : '90%'};
+  background-size: 80%;
   color: ${(props) => palette.get(props.digit) || 'inherit'};
 `;
 
@@ -63,30 +65,33 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
   const clickContextButtonHandle = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     clickContextCellHandle(cell);
-  }
+  };
 
   useEffect(() => {
     if (cell.status === 'flag-icon') setIcon(flagIcon);
     if (cell.status === 'quest-icon') setIcon(questIcon);
     if (cell.status === 'bomb-boom') {
       setShowFrame(false);
-      setIcon(boomIcon);
-    };
+      setIcon(bombIcon);
+    }
     if (cell.status === 'bomb-open') {
       setShowFrame(false);
       setIcon(bombIcon);
-    };
+    }
     if (cell.status === 'open') {
       setShowFrame(false);
-    };
+    }
     if (cell.status === 'around-bombs') {
       setShowFrame(false);
-    };
+    }
+    if (cell.status === 'wrong-bomb') {
+      setIcon(bombIcon);
+      setShowFrame(false);
+    }
     if (cell.status === 'closed') {
       setIcon('');
       setShowFrame(true);
-    };
-
+    }
   }, [cell]);
 
   return (

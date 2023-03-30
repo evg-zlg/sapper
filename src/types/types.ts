@@ -5,7 +5,8 @@ export type TCellStatus =
   | 'quest-icon'
   | 'around-bombs'
   | 'bomb-open'
-  | 'bomb-boom';
+  | 'bomb-boom'
+  | 'wrong-bomb';
 
 export interface ICell {
   id: number;

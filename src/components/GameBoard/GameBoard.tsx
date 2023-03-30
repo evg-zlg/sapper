@@ -8,6 +8,8 @@ import {
   fillGrid,
   getCountFlags,
   openArea,
+  openBombAfterLost,
+  openCellsAfterWin,
 } from './gameLogic';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
@@ -73,19 +75,25 @@ function GameBoard() {
   };
 
   const makeMove = (cell: ICell) => {
+    // do nothing if flag
     if (cell.status === 'flag-icon') return;
 
     let isVictory = false;
 
+    // game over if click to bomb 
     if (cell.content === -1) {
       dispatch(changePhase('lost'));
       dispatch(updateOneCell({ ...cell, status: 'bomb-boom' }));
     }
+
+    // open area if click in empty cell
     if (cell.content === 0) {
       const newCells = openArea(cells, cell);
       dispatch(changeCells(newCells));
       isVictory = checkVictory(newCells, bombsLeft, null);
     }
+
+    // open one cell if click in cell with digit
     if (cell.content > 0) {
       dispatch(updateOneCell({ ...cell, status: 'around-bombs' }));
       isVictory = checkVictory(cells, bombsLeft, {
@@ -95,6 +103,7 @@ function GameBoard() {
     }
 
     if (isVictory) {
+      
       dispatch(changePhase('win'));
     }
   };
@@ -142,6 +151,14 @@ function GameBoard() {
   useEffect(() => {
     if (phase === 'new' || phase === 'change-lvl') {
       restartGame();
+    }
+    if (phase === 'win') {
+      const newCells = openCellsAfterWin(cells);
+      dispatch(changeCells(newCells));
+    }
+    if (phase === 'lost') {
+      const newCells = openBombAfterLost(cells);
+      dispatch(changeCells(newCells));
     }
   }, [phase]);
 
