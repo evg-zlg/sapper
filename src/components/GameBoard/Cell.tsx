@@ -6,9 +6,9 @@ import { palette } from '../../const/const';
 import { Frame } from './Frame';
 
 import bombIcon from './icons/bomb-icon.png';
-// import boomIcon from './icons/boom-icon.png';
+import wrongBomb from './icons/wrong-bomb-icon.png';
 import flagIcon from './icons/flag-icon.png';
-import questIcon from './icons/quest-icon2.png';
+import questIcon from './icons/quest-icon.png';
 
 interface ICellFrame {
   status: TCellStatus;
@@ -85,9 +85,9 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
       setShowFrame(false);
     }
     if (cell.status === 'wrong-bomb') {
-      setIcon(bombIcon);
+      setIcon(wrongBomb);
       setShowFrame(false);
-    }
+    }  
     if (cell.status === 'closed') {
       setIcon('');
       setShowFrame(true);
