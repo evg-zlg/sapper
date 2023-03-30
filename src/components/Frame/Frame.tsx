@@ -20,13 +20,24 @@ const outsideStyled = css`
 `;
 
 const cellStyled = css`
-  border-top-color: var(--border-primery-color);
-  border-left-color: var(--border-primery-color);
-  border-right-color: var(--border-secondary-color);
-  border-bottom-color: var(--border-secondary-color);
+  ${outsideStyled}
   width: 100%;
   height: 100%;
 `;
+
+const buttonOutsideStyled = css`
+  ${outsideStyled}
+  border-width: 2px;
+  transition: all 0.2s ease 0s;
+`;
+
+const buttonInsideStyled = css`
+  ${insideStyled}
+  border-width: 2px;
+  transition: all 0.2s ease 0s;
+`;
+
+
 
 const noneBorder = css`
   border: none;
@@ -41,6 +52,8 @@ const FrameStyled = styled.div<IFrameStyled>`
   ${(props) => (props.variant === 'inside' ? insideStyled : '')}
   ${(props) => (props.variant === 'outside' ? outsideStyled : '')}
   ${(props) => (props.variant === 'cell' ? cellStyled : '')}
+  ${(props) => (props.variant === 'button-outside' ? buttonOutsideStyled : '')}
+  ${(props) => (props.variant === 'button-inside' ? buttonInsideStyled : '')}
   ${(props) => (props.variant === 'none' ? noneBorder : '')}
 `;
 
