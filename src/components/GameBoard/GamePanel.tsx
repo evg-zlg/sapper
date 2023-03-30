@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
-import { Frame } from './Frame';
+import { Frame } from '../Frame';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import { changePhase, selectState } from '../../store/reducers/gameSlice';
@@ -37,7 +37,8 @@ interface IRestarter {
 }
 
 const Restarter = styled.button<IRestarter>`
-  width: 40px;
+  margin: 5px 0 0 0;
+  width: 46px;
   height: 40px;
   border: none;
   background-image: url(${(props) => props.smile});
@@ -47,8 +48,7 @@ const Restarter = styled.button<IRestarter>`
   background-color: unset;
   cursor: pointer;
 `;
-const Timer = styled.div`
-`;
+const Timer = styled.div``;
 
 function GamePanel() {
   const dispatch = useAppDispatch();
@@ -76,9 +76,11 @@ function GamePanel() {
       <Frame variant="inside">
         <Wrapper>
           <Moves>
-            <RetroDigits value={bombsLeft}/>
+            <RetroDigits value={bombsLeft} />
           </Moves>
-          <Restarter smile={smile} onClick={clickRestartHandler} />
+          <Frame variant="outside">
+            <Restarter smile={smile} onClick={clickRestartHandler} />
+          </Frame>
           <Timer>
             <RetroDigits value={timeLeft} />
           </Timer>

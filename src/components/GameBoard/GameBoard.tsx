@@ -23,7 +23,7 @@ import {
 } from '../../store/reducers/gameSlice';
 
 import { ICell } from '../../types/types';
-import { Frame } from './Frame';
+import { Frame } from '../Frame';
 import { GamePanel } from './GamePanel';
 import { useTimer } from '../../hooks/timer';
 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { ICell, TCellStatus } from '../../types/types';
 import { palette } from '../../const/const';
-import { Frame } from './Frame';
+import { Frame } from '../Frame';
 
 import bombIcon from './icons/bomb-icon.png';
 import wrongBomb from './icons/wrong-bomb-icon.png';

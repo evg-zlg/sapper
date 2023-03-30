@@ -36,7 +36,7 @@ const FrameStyled = styled.div<IFrameStyled>`
   width: fit-content;
   height: fit-content;
   border-radius: 2px;
-  border-width: 4px;
+  border-width: 3px;
   border-style: solid;
   ${(props) => (props.variant === 'inside' ? insideStyled : '')}
   ${(props) => (props.variant === 'outside' ? outsideStyled : '')}
