@@ -52,15 +52,15 @@ const Variant5 = css`
 
 const Variant6 = css`
   top: 24px;
-  left: 4px;
+  left: 4.5px;
   transform: rotate(180deg);
-  border-top-width: 3px;
+  border-top-width: 3.5px;
 `;
 const Variant7 = css`
   top: 27px;
-  left: 4px;
+  left: 4.5px;
   transform: rotate(0deg);
-  border-top-width: 3px;
+  border-top-width: 3.5px;
 `;
 
 interface IDigitElement {

@@ -52,3 +52,12 @@ export const menuButtons: {levelType: TLevelType, text: string}[] = [
   { levelType: 'hard', text: 'hard' },
   { levelType: 'custom', text: 'custom' },
 ];
+
+export const minMaxFormValues = {
+  colMin: 10,
+  colMax: 24,
+  rowMin: 10,
+  rowMax: 32,
+  bombMin: 1,
+  bombMax: 999,
+};
