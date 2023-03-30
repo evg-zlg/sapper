@@ -10,18 +10,9 @@ import wrongBomb from './icons/wrong-bomb-icon.png';
 import flagIcon from './icons/flag-icon.png';
 import questIcon from './icons/quest-icon.png';
 
-interface ICellFrame {
-  status: TCellStatus;
-}
-
-const CellFrame = styled.div<ICellFrame>`
-  border: 1px solid gray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${(props) =>
-    props.status === 'bomb-boom' ? 'red' : 'inherit'};
-`;
+// interface ICellFrame {
+//   status: TCellStatus;
+// }
 
 interface ICellStyled {
   status: TCellStatus;
@@ -30,8 +21,8 @@ interface ICellStyled {
 }
 
 const CellStyled = styled.button<ICellStyled>`
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   border: none;
   display: flex;
   justify-content: center;
@@ -39,12 +30,13 @@ const CellStyled = styled.button<ICellStyled>`
   user-select: none;
   font-size: 24px;
   font-weight: 900;
+  border: 1px solid var(--border-secondary-color);
   background-color: ${(props) =>
     props.status === 'bomb-boom' ? 'red' : 'inherit'};
   background-image: url(${(props) => props.icon});
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: 80%;
+  background-size: 70%;
   color: ${(props) => palette.get(props.digit) || 'inherit'};
 `;
 
@@ -87,7 +79,7 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
     if (cell.status === 'wrong-bomb') {
       setIcon(wrongBomb);
       setShowFrame(false);
-    }  
+    }
     if (cell.status === 'closed') {
       setIcon('');
       setShowFrame(true);
@@ -95,22 +87,22 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
   }, [cell]);
 
   return (
-    <CellFrame status={cell.status}>
-      <Frame type={showFrame ? 'outside' : 'none'}>
-        <CellStyled
-          status={cell.status}
-          digit={cell.content}
-          icon={icon}
-          type="button"
-          onClick={clickButtonHandle}
-          onContextMenu={clickContextButtonHandle}
-        >
+    // <CellFrame status={cell.status}>
+      <CellStyled
+        status={cell.status}
+        digit={cell.content}
+        icon={icon}
+        type="button"
+        onClick={clickButtonHandle}
+        onContextMenu={clickContextButtonHandle}
+      >
+        <Frame variant={showFrame ? 'cell' : 'none'}>
           {cell.status === 'around-bombs' && cell.content !== 0
             ? cell.content
             : ''}
-        </CellStyled>
-      </Frame>
-    </CellFrame>
+        </Frame>
+      </CellStyled>
+    // </CellFrame>
   );
 }
 

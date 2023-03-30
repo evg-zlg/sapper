@@ -19,11 +19,13 @@ import {
   selectState,
   updateOneCell,
   changeBombsLeft,
+  changeTimeleft,
 } from '../../store/reducers/gameSlice';
 
 import { ICell } from '../../types/types';
 import { Frame } from './Frame';
 import { GamePanel } from './GamePanel';
+import { useTimer } from '../../hooks/timer';
 
 interface IGridTemplateProps {
   col: number;
@@ -48,6 +50,7 @@ const GridTemplate = styled.div<IGridTemplateProps>`
 `;
 
 function GameBoard() {
+  const { startTimer, stopTimer, timeLeft } = useTimer();
   const dispatch = useAppDispatch();
   const { phase, boardParams, cells, bombsLeft } = useAppSelector(selectState);
 
@@ -80,7 +83,7 @@ function GameBoard() {
 
     let isVictory = false;
 
-    // game over if click to bomb 
+    // game over if click to bomb
     if (cell.content === -1) {
       dispatch(changePhase('lost'));
       dispatch(updateOneCell({ ...cell, status: 'bomb-boom' }));
@@ -103,7 +106,6 @@ function GameBoard() {
     }
 
     if (isVictory) {
-      
       dispatch(changePhase('win'));
     }
   };
@@ -111,6 +113,7 @@ function GameBoard() {
   const clickCellHandle = (cell: ICell) => {
     if (phase === 'new' || phase === 'change-lvl') {
       startNewGame(cell);
+      startTimer();
     }
     if (phase === 'play' && cell.status === 'closed') {
       makeMove(cell);
@@ -143,6 +146,7 @@ function GameBoard() {
   };
 
   const restartGame = () => {
+    stopTimer();
     prepareNewGame();
     dispatch(changePhase('new'));
     dispatch(changeBombsLeft(boardParams.bombs));
@@ -151,22 +155,30 @@ function GameBoard() {
   useEffect(() => {
     if (phase === 'new' || phase === 'change-lvl') {
       restartGame();
+      stopTimer();
+      dispatch(changeTimeleft(0));
     }
     if (phase === 'win') {
       const newCells = openCellsAfterWin(cells);
       dispatch(changeCells(newCells));
+      stopTimer();
     }
     if (phase === 'lost') {
       const newCells = openBombAfterLost(cells);
       dispatch(changeCells(newCells));
+      stopTimer();
     }
   }, [phase]);
 
+  useEffect(() => {
+    dispatch(changeTimeleft(timeLeft));
+  }, [timeLeft]);
+
   return (
-    <Frame type="outside">
+    <Frame variant="outside">
       <Board>
         <GamePanel />
-        <Frame type="inside">
+        <Frame variant="inside">
           <GridTemplate col={boardParams.col} row={boardParams.row}>
             {cells.map((column) =>
               column.map((cell) => (

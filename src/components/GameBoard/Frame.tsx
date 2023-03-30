@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { TFrameType } from '../../types/types';
 
 interface IFrameStyled {
-  type: TFrameType;
+  variant: TFrameType;
 }
 
 const insideStyled = css`
@@ -19,6 +19,15 @@ const outsideStyled = css`
   border-bottom-color: var(--border-secondary-color);
 `;
 
+const cellStyled = css`
+  border-top-color: var(--border-primery-color);
+  border-left-color: var(--border-primery-color);
+  border-right-color: var(--border-secondary-color);
+  border-bottom-color: var(--border-secondary-color);
+  width: 100%;
+  height: 100%;
+`;
+
 const noneBorder = css`
   border: none;
 `;
@@ -26,22 +35,22 @@ const noneBorder = css`
 const FrameStyled = styled.div<IFrameStyled>`
   width: fit-content;
   height: fit-content;
-  /* margin: auto auto; */
   border-radius: 2px;
   border-width: 4px;
   border-style: solid;
-  ${(props) => (props.type === 'inside' ? insideStyled : '')}
-  ${(props) => (props.type === 'outside' ? outsideStyled : '')}
-  ${(props) => (props.type === 'none' ? noneBorder : '')}
+  ${(props) => (props.variant === 'inside' ? insideStyled : '')}
+  ${(props) => (props.variant === 'outside' ? outsideStyled : '')}
+  ${(props) => (props.variant === 'cell' ? cellStyled : '')}
+  ${(props) => (props.variant === 'none' ? noneBorder : '')}
 `;
 
 interface IFrame {
-  type: TFrameType;
-  children: ReactElement;
+  variant: TFrameType;
+  children: ReactElement | string | number;
 }
 
-function Frame({ type, children }: IFrame) {
-  return <FrameStyled type={type}>{children}</FrameStyled>;
+function Frame({ variant, children }: IFrame) {
+  return <FrameStyled variant={variant}>{children}</FrameStyled>;
 }
 
 export { Frame };

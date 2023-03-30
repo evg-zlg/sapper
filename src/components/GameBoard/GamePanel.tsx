@@ -51,7 +51,7 @@ const Timer = styled.div`
 
 function GamePanel() {
   const dispatch = useAppDispatch();
-  const { phase, bombsLeft } = useAppSelector(selectState);
+  const { phase, bombsLeft, timeLeft } = useAppSelector(selectState);
   const [smile, setSmile] = useState('');
 
   const clickRestartHandler = () => {
@@ -72,11 +72,11 @@ function GamePanel() {
 
   return (
     <Panel>
-      <Frame type="inside">
+      <Frame variant="inside">
         <Wrapper>
           <Moves>{bombsLeft}</Moves>
           <Restarter smile={smile} onClick={clickRestartHandler} />
-          <Timer>timer</Timer>
+          <Timer>{timeLeft}</Timer>
         </Wrapper>
       </Frame>
     </Panel>
