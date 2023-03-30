@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { levels } from '../../const/const';
 import { TLevelType } from '../../types/types';
-import { getBoardParamsByLevelType } from '../GameBoard/gameLogic';
+import { getBoardParamsByLevelType } from '../GameBoard/utils';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { changeLevel, changePhase } from '../../store/reducers/gameSlice';

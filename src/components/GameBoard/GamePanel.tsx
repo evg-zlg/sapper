@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
-import { Frame } from './Frame';
+import { Frame } from '../Frame';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import { changePhase, selectState } from '../../store/reducers/gameSlice';
@@ -9,10 +9,11 @@ import { changePhase, selectState } from '../../store/reducers/gameSlice';
 import smilePlayIcon from './icons/smile-play-icon.png';
 import smileWinIcon from './icons/smile-win-icon.png';
 import smileLostIcon from './icons/smile-lost-icon.png';
+import { RetroDigits } from '../RetroDigits';
 
 const Panel = styled.div`
   width: 100%;
-  height: 50px;
+  height: 62px;
   > div {
     width: 100%;
     height: 100%;
@@ -29,7 +30,6 @@ const Wrapper = styled.div`
 
 const Moves = styled.div`
   text-align: center;
-  width: 50px;
 `;
 
 interface IRestarter {
@@ -37,21 +37,22 @@ interface IRestarter {
 }
 
 const Restarter = styled.button<IRestarter>`
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
+  margin: 5px 0 0 0;
+  width: 46px;
+  height: 40px;
   border: none;
   background-image: url(${(props) => props.smile});
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: unset;
   cursor: pointer;
 `;
-const Timer = styled.div`
-  width: 50px;
-`;
+const Timer = styled.div``;
 
 function GamePanel() {
   const dispatch = useAppDispatch();
-  const { phase, bombsLeft } = useAppSelector(selectState);
+  const { phase, bombsLeft, timeLeft } = useAppSelector(selectState);
   const [smile, setSmile] = useState('');
 
   const clickRestartHandler = () => {
@@ -72,11 +73,17 @@ function GamePanel() {
 
   return (
     <Panel>
-      <Frame type="inside">
+      <Frame variant="inside">
         <Wrapper>
-          <Moves>{bombsLeft}</Moves>
-          <Restarter smile={smile} onClick={clickRestartHandler} />
-          <Timer>timer</Timer>
+          <Moves>
+            <RetroDigits value={bombsLeft} />
+          </Moves>
+          <Frame variant="outside">
+            <Restarter smile={smile} onClick={clickRestartHandler} />
+          </Frame>
+          <Timer>
+            <RetroDigits value={timeLeft} />
+          </Timer>
         </Wrapper>
       </Frame>
     </Panel>

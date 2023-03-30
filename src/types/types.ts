@@ -5,7 +5,8 @@ export type TCellStatus =
   | 'quest-icon'
   | 'around-bombs'
   | 'bomb-open'
-  | 'bomb-boom';
+  | 'bomb-boom'
+  | 'wrong-bomb';
 
 export interface ICell {
   id: number;
@@ -21,7 +22,7 @@ export type TLevelType = 'easy' | 'normal' | 'hard' | 'custom';
 
 export type TGamePhase = 'change-lvl' | 'new' | 'play' |  'lost' | 'win';
 
-export type TFrameType = 'inside' | 'outside' | 'none';
+export type TFrameType = 'inside' | 'outside' | 'cell' | 'none';
 
 export type IBoardParams = {
   col: number;
