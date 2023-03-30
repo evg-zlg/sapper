@@ -25,19 +25,19 @@ const cellStyled = css`
   height: 100%;
 `;
 
-const buttonOutsideStyled = css`
+const formOutsideStyled = css`
   ${outsideStyled}
   border-width: 2px;
   transition: all 0.2s ease 0s;
+  z-index: 1;
 `;
 
-const buttonInsideStyled = css`
+const formInsideStyled = css`
   ${insideStyled}
   border-width: 2px;
   transition: all 0.2s ease 0s;
+  z-index: 1;
 `;
-
-
 
 const noneBorder = css`
   border: none;
@@ -52,8 +52,8 @@ const FrameStyled = styled.div<IFrameStyled>`
   ${(props) => (props.variant === 'inside' ? insideStyled : '')}
   ${(props) => (props.variant === 'outside' ? outsideStyled : '')}
   ${(props) => (props.variant === 'cell' ? cellStyled : '')}
-  ${(props) => (props.variant === 'button-outside' ? buttonOutsideStyled : '')}
-  ${(props) => (props.variant === 'button-inside' ? buttonInsideStyled : '')}
+  ${(props) => (props.variant === 'form-outside' ? formOutsideStyled : '')}
+  ${(props) => (props.variant === 'form-inside' ? formInsideStyled : '')}
   ${(props) => (props.variant === 'none' ? noneBorder : '')}
 `;
 

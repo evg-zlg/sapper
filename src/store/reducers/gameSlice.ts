@@ -46,6 +46,7 @@ export const gameSlice = createSlice({
     ) {
       state.currentLevel = actions.payload.currentLevel;
       state.boardParams = actions.payload.boardParams;
+      state.phase = 'change-lvl';
     },
     changePhase(state, actions: PayloadAction<TGamePhase>) {
       state.phase = actions.payload;

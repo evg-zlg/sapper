@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import styled from 'styled-components';
 import { levels, menuButtons } from '../../const/const';
 import { TLevelType } from '../../types/types';
@@ -6,6 +8,7 @@ import { getBoardParamsByLevelType } from '../GameBoard/utils';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { changeLevel, changePhase } from '../../store/reducers/gameSlice';
 import { Frame } from '../Frame';
+import { CustomParamsForm } from './CustomParamsForm';
 
 const Menu = styled.menu`
   margin: 0 auto;
@@ -29,9 +32,12 @@ const Button = styled.button`
 function GameMenu() {
   const dispatch = useAppDispatch();
   const { currentLevel } = useAppSelector((state) => state.gameState);
+  const [showCustomParamsForm, setShowCustomParamsForm] = useState(false);
 
   const clickLevelHandle = (levelType: TLevelType) => {
-    if (levelType !== currentLevel) {
+    if (levelType === 'custom') {
+      setShowCustomParamsForm(true);
+    } else if (levelType !== currentLevel) {
       const boardParams = getBoardParamsByLevelType(levelType, levels);
       dispatch(changeLevel({ currentLevel: levelType, boardParams }));
       dispatch(changePhase('change-lvl'));
@@ -41,12 +47,22 @@ function GameMenu() {
   return (
     <Menu>
       {menuButtons.map((button) => (
-        <Frame variant={currentLevel === button.levelType ? 'button-inside' : 'button-outside'}>
-          <Button type="button"  onClick={() => clickLevelHandle(button.levelType)}>
+        <Frame key={button.text}
+          variant={
+            currentLevel === button.levelType ? 'form-inside' : 'form-outside'
+          }
+        >
+          <Button
+            type="button"
+            onClick={() => clickLevelHandle(button.levelType)}
+          >
             {button.text}
           </Button>
         </Frame>
       ))}
+      {showCustomParamsForm && (
+        <CustomParamsForm setShowCustomParamsForm={setShowCustomParamsForm} />
+      )}
     </Menu>
   );
 }
