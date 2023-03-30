@@ -1,22 +1,47 @@
+import { IBoardParams, ICell } from '../types/types';
+
 export enum APPRoute {
   main = '/',
   winners = '/winners',
 }
 
-export const boardSize = [
+export const levels: IBoardParams[] = [
   {
     col: 8,
     row: 8,
-    minutes: 10,
+    bombs: 10,
   },
   {
     col: 16,
     row: 16,
-    minutes: 40,
+    bombs: 40,
   },
   {
-    col: 32,
-    row: 16,
-    minutes: 100,
+    col: 16,
+    row: 32,
+    bombs: 100,
+  },
+  {
+    col: 10,
+    row: 10,
+    bombs: 20,
   },
 ];
+
+export const palette = new Map([
+  [1, '#0040d3'],
+  [2, '#006a00'],
+  [3, '#c10101'],
+  [4, '#00008B'],
+  [5, '#A52A2A'],
+  [6, '#2b857c'],
+  [7, '#000000'],
+  [8, '#FFFFFF'],
+]);
+
+export const initCell: ICell = {
+  id: 0,
+  content: 0,
+  status: 'closed',
+  position: { i: 0, j: 0 },
+};
