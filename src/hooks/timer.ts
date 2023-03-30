@@ -7,8 +7,9 @@ function useTimer() {
 
   const timerFunc = () => {
     const now = new Date();
-    const letftTime = now.getSeconds() - startedTime.getSeconds();
+    const letftTime = Math.trunc((now.valueOf() - startedTime.valueOf()) / 1000);
     setTimeLeft(letftTime);
+    console.log(now.valueOf(), startedTime.valueOf(), letftTime)
   };
 
   const startTimer = () => {

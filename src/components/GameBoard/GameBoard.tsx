@@ -62,6 +62,9 @@ function GameBoard() {
   const startNewGame = (cell: ICell) => {
     if (cell.status === 'flag-icon') return;
 
+    stopTimer();
+    startTimer();
+
     const filledGrid: ICell[][] = fillGrid({
       source: cells,
       bombs: boardParams.bombs,
@@ -113,7 +116,6 @@ function GameBoard() {
   const clickCellHandle = (cell: ICell) => {
     if (phase === 'new' || phase === 'change-lvl') {
       startNewGame(cell);
-      startTimer();
     }
     if (phase === 'play' && cell.status === 'closed') {
       makeMove(cell);
@@ -171,6 +173,12 @@ function GameBoard() {
   }, [phase]);
 
   useEffect(() => {
+
+    if (timeLeft > 999) {
+      dispatch(changePhase('lost'));
+      return;
+    }
+    
     dispatch(changeTimeleft(timeLeft));
   }, [timeLeft]);
 

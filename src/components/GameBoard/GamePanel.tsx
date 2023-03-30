@@ -9,10 +9,11 @@ import { changePhase, selectState } from '../../store/reducers/gameSlice';
 import smilePlayIcon from './icons/smile-play-icon.png';
 import smileWinIcon from './icons/smile-win-icon.png';
 import smileLostIcon from './icons/smile-lost-icon.png';
+import { RetroDigits } from '../RetroDigits';
 
 const Panel = styled.div`
   width: 100%;
-  height: 50px;
+  height: 62px;
   > div {
     width: 100%;
     height: 100%;
@@ -29,7 +30,6 @@ const Wrapper = styled.div`
 
 const Moves = styled.div`
   text-align: center;
-  width: 50px;
 `;
 
 interface IRestarter {
@@ -37,16 +37,17 @@ interface IRestarter {
 }
 
 const Restarter = styled.button<IRestarter>`
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   border: none;
   background-image: url(${(props) => props.smile});
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: unset;
   cursor: pointer;
 `;
 const Timer = styled.div`
-  width: 50px;
 `;
 
 function GamePanel() {
@@ -74,9 +75,13 @@ function GamePanel() {
     <Panel>
       <Frame variant="inside">
         <Wrapper>
-          <Moves>{bombsLeft}</Moves>
+          <Moves>
+            <RetroDigits value={bombsLeft}/>
+          </Moves>
           <Restarter smile={smile} onClick={clickRestartHandler} />
-          <Timer>{timeLeft}</Timer>
+          <Timer>
+            <RetroDigits value={timeLeft} />
+          </Timer>
         </Wrapper>
       </Frame>
     </Panel>

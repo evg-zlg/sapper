@@ -71,6 +71,7 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
       setIcon(bombIcon);
     }
     if (cell.status === 'open') {
+      setIcon('');
       setShowFrame(false);
     }
     if (cell.status === 'around-bombs') {
