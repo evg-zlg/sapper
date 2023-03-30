@@ -9,10 +9,8 @@ import styled from 'styled-components';
 import { Frame } from '../Frame';
 
 import { useAppDispatch } from '../../hooks/redux';
-import { changeLevel, changePhase } from '../../store/reducers/gameSlice';
+import { changeLevel } from '../../store/reducers/gameSlice';
 import { IBoardParams, TLevelType } from '../../types/types';
-import { levels } from '../../const/const';
-import { getBoardParamsByLevelType } from '../GameBoard/utils';
 
 const CustomParamsModal = styled.div`
   position: fixed;
@@ -38,6 +36,7 @@ const CustomParamsFormStyled = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  
 `;
 
 const TitleForm = styled.h2`
@@ -45,23 +44,30 @@ const TitleForm = styled.h2`
   border-bottom: 1px solid var(--primary-accent-color);
 `;
 
+const GridTemplate = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 2fr 3fr;
+  gap: 10px;
+  grid-template-rows: 1fr 1fr 1fr;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid var(--primary-accent-color);
+
+`;
+
 const Label = styled.label`
   display: inline-flex;
   align-items: center;
   gap: 10px;
   font-size: 18px;
-  text-transform: capitalize;
 `;
 
 const Input = styled.input`
-  height: 20px;
-  width: 50px;
+  height: 30px;
+  width: 100%;
   outline: none;
 `;
 
 const Control = styled.div`
-  border-top: 1px solid var(--primary-accent-color);
-  padding: 5px 0;
   display: flex;
   gap: 10px;
 `;
@@ -132,36 +138,35 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
           onReset={resetFormHandler}
         >
           <TitleForm>Game options </TitleForm>
-          <Label htmlFor="input-col">
-            Width:
+          <GridTemplate>
+            <Label htmlFor="input-col">Width:</Label>
             <Input
               type="text"
               id="input-row"
               value={rowValue}
               onChange={rowInputHandler}
             />
-            (min - 10, max - 50)
-          </Label>
-          <Label htmlFor="input-col">
-            Height:
+            <Label>(min - 10, max - 50)</Label>
+
+            <Label htmlFor="input-col">Height:</Label>
             <Input
               type="text"
               id="input-col"
               value={colValue}
               onChange={colInputHandler}
             />
-            (min - 10, max - 25)
-          </Label>
-          <Label htmlFor="input-bomb">
-            Bombs:
+            <Label>(min - 10, max - 25)</Label>
+
+            <Label htmlFor="input-bomb">Bombs:</Label>
             <Input
               type="text"
               id="input-bomb"
               value={bombValue}
               onChange={bombInputHandler}
             />
-            (min - 1, max - 999)
-          </Label>
+            <Label>(min - 1, max - 999)</Label>
+          </GridTemplate>
+
           <Control>
             <Frame variant="form-outside">
               <Button type="submit" value="New game" />
