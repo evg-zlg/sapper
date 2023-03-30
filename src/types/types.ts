@@ -22,7 +22,7 @@ export type TLevelType = 'easy' | 'normal' | 'hard' | 'custom';
 
 export type TGamePhase = 'change-lvl' | 'new' | 'play' |  'lost' | 'win';
 
-export type TFrameType = 'inside' | 'outside' | 'cell' | 'none';
+export type TFrameType = 'inside' | 'outside' | 'cell' | 'form-inside' | 'form-outside' | 'none';
 
 export type IBoardParams = {
   col: number;

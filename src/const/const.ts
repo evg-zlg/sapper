@@ -1,4 +1,4 @@
-import { IBoardParams, ICell } from '../types/types';
+import { IBoardParams, ICell, TLevelType } from '../types/types';
 
 export enum APPRoute {
   main = '/',
@@ -45,3 +45,10 @@ export const initCell: ICell = {
   status: 'closed',
   position: { i: 0, j: 0 },
 };
+
+export const menuButtons: {levelType: TLevelType, text: string}[] = [
+  { levelType: 'easy', text: 'easy' },
+  { levelType: 'normal', text: 'normal' },
+  { levelType: 'hard', text: 'hard' },
+  { levelType: 'custom', text: 'custom' },
+];
