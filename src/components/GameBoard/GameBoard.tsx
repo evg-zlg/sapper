@@ -8,7 +8,7 @@ import {
   fillGrid,
   getCountFlags,
   openArea,
-  openBombAfterLost,
+  openBombsAfterLost,
   openCellsAfterWin,
 } from './utils';
 
@@ -22,10 +22,12 @@ import {
   changeTimeleft,
 } from '../../store/reducers/gameSlice';
 
-import { ICell } from '../../types/types';
+import { ICell, IWinner } from '../../types/types';
 import { Frame } from '../Frame';
 import { GamePanel } from './GamePanel';
 import { useTimer } from '../../hooks/timer';
+import { addWinner } from '../../store/reducers/winnersSlice';
+import { localStorageKey } from '../../const/const';
 
 interface IGridTemplateProps {
   col: number;
@@ -80,6 +82,19 @@ function GameBoard() {
     }
   };
 
+  const endGameWithVictory = () => {
+    const winner: IWinner = {
+      id: Math.random(),
+      timeLeft,
+      boardParams,
+    };
+
+    dispatch(changePhase('win'));
+    dispatch(
+      addWinner(winner),
+    );
+  };
+
   const makeMove = (cell: ICell) => {
     // do nothing if flag
     if (cell.status === 'flag-icon') return;
@@ -109,7 +124,7 @@ function GameBoard() {
     }
 
     if (isVictory) {
-      dispatch(changePhase('win'));
+      endGameWithVictory();
     }
   };
 
@@ -142,7 +157,7 @@ function GameBoard() {
         status === null ? null : { ...cell, status: status || '' },
       );
       if (isVictory) {
-        dispatch(changePhase('win'));
+        endGameWithVictory();
       }
     }
   };
@@ -166,14 +181,13 @@ function GameBoard() {
       stopTimer();
     }
     if (phase === 'lost') {
-      const newCells = openBombAfterLost(cells);
+      const newCells = openBombsAfterLost(cells);
       dispatch(changeCells(newCells));
       stopTimer();
     }
   }, [phase]);
 
   useEffect(() => {
-
     if (timeLeft > 999) {
       dispatch(changePhase('lost'));
       return;
