@@ -2,15 +2,10 @@ import styled from 'styled-components';
 import { baseTheme } from '../../styles/theme';
 
 import { Cell } from './Cell';
-import { ICell } from '../../types/types';
-import { Frame } from '../Frame';
+import { ICell, TBorderShadowType } from '../../types/types';
 import { GamePanel } from './GamePanel';
 import { useGame } from '../../hooks/game/useGame';
-
-interface IGridTemplateProps {
-  col: number;
-  row: number;
-}
+import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
 
 const Board = styled.section`
   padding: 15px;
@@ -19,7 +14,14 @@ const Board = styled.section`
   gap: 15px;
   align-items: stretch;
   background-color: ${baseTheme.colors.bgPrimery};
+  ${BorderWithShadow}
 `;
+
+interface IGridTemplateProps {
+  col: number;
+  row: number;
+  variantBorder: TBorderShadowType;
+}
 
 const GridTemplate = styled.div<IGridTemplateProps>`
   display: grid;
@@ -27,6 +29,8 @@ const GridTemplate = styled.div<IGridTemplateProps>`
       ${(props) => props.row},
       1fr
     );
+  transition: all 0.3s ease 0s;
+  ${BorderWithShadow}
 `;
 
 function GameBoard() {
@@ -49,25 +53,25 @@ function GameBoard() {
   };
 
   return (
-    <Frame variant="outside">
-      <Board>
-        <GamePanel bombsLeft={bombsLeft} phase={phase} timeLeft={timeLeft} />
-        <Frame variant="inside">
-          <GridTemplate col={boardParams.col} row={boardParams.row}>
-            {cells.map((column) =>
-              column.map((cell) => (
-                <Cell
-                  key={cell.id}
-                  cell={cell}
-                  clickCellHandler={clickCellHandler}
-                  clickContextCellHandler={clickContextCellHandler}
-                />
-              )),
-            )}
-          </GridTemplate>
-        </Frame>
-      </Board>
-    </Frame>
+    <Board variantBorder="big-outside">
+      <GamePanel bombsLeft={bombsLeft} phase={phase} timeLeft={timeLeft} />
+      <GridTemplate
+        variantBorder="big-inside"
+        col={boardParams.col}
+        row={boardParams.row}
+      >
+        {cells.map((column) =>
+          column.map((cell) => (
+            <Cell
+              key={cell.id}
+              cell={cell}
+              clickCellHandler={clickCellHandler}
+              clickContextCellHandler={clickContextCellHandler}
+            />
+          )),
+        )}
+      </GridTemplate>
+    </Board>
   );
 }
 

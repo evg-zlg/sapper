@@ -9,8 +9,8 @@ import { getBoardParamsByLevelType } from '../../hooks/game/utils';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { changeLevel, changePhase } from '../../store/reducers/gameSlice';
-import { Frame } from '../Frame';
 import { CustomParamsForm } from './CustomParamsForm';
+import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
 
 const Menu = styled.menu`
   margin: 0 auto;
@@ -26,9 +26,7 @@ const Button = styled.button`
   background-color: ${baseTheme.colors.bgPrimery};
   border: none;
   cursor: pointer;
-  > div {
-    border-width: 1px;
-  }
+  ${BorderWithShadow}
 `;
 
 function GameMenu() {
@@ -49,18 +47,16 @@ function GameMenu() {
   return (
     <Menu>
       {menuButtons.map((button) => (
-        <Frame key={button.text}
-          variant={
-            currentLevel === button.levelType ? 'form-inside' : 'form-outside'
+        <Button
+          key={button.text}
+          variantBorder={
+            currentLevel === button.levelType ? 'small-inside' : 'small-outside'
           }
+          type="button"
+          onClick={() => clickLevelHandle(button.levelType)}
         >
-          <Button
-            type="button"
-            onClick={() => clickLevelHandle(button.levelType)}
-          >
-            {button.text}
-          </Button>
-        </Frame>
+          {button.text}
+        </Button>
       ))}
       {showCustomParamsForm && (
         <CustomParamsForm setShowCustomParamsForm={setShowCustomParamsForm} />

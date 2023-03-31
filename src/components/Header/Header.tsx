@@ -56,8 +56,8 @@ const Li = styled.li`
 
 function Header() {
   return (
-    <Container>
-      <HeaderStyled>
+    <HeaderStyled>
+      <Container>
         <Nav>
           <Ul>
             <Li>
@@ -68,8 +68,8 @@ function Header() {
             </Li>
           </Ul>
         </Nav>
-      </HeaderStyled>
-    </Container>
+      </Container>
+    </HeaderStyled>
   );
 }
 

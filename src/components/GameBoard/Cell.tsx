@@ -2,19 +2,20 @@ import { MouseEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { baseTheme } from '../../styles/theme';
 
-import { ICell, TCellStatus } from '../../types/types';
+import { ICell, TBorderShadowType, TCellStatus } from '../../types/types';
 import { palette } from '../../const/const';
-import { Frame } from '../Frame';
 
 import bombIcon from './icons/bomb-icon.png';
 import wrongBomb from './icons/wrong-bomb-icon.png';
 import flagIcon from './icons/flag-icon.png';
 import questIcon from './icons/quest-icon.png';
+import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
 
 interface ICellStyled {
   status: TCellStatus;
   digit: number;
   icon: string;
+  variantBorder: TBorderShadowType;
 }
 
 const CellStyled = styled.button<ICellStyled>`
@@ -28,14 +29,17 @@ const CellStyled = styled.button<ICellStyled>`
   user-select: none;
   font-size: 24px;
   font-weight: 900;
-  border: 1px solid ${baseTheme.colors.borderSecondary};
+  border: 1px solid ${baseTheme.colors.borderCell};
   background-color: ${(props) =>
-    props.status === 'bomb-boom' ? `${baseTheme.colors.boomBgCell}` : 'inherit'};
+    props.status === 'bomb-boom'
+      ? `${baseTheme.colors.boomBgCell}`
+      : 'inherit'};
   background-image: url(${(props) => props.icon});
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 70%;
   color: ${(props) => palette.get(props.digit) || 'inherit'};
+  ${BorderWithShadow}
 `;
 
 interface ICellProps {
@@ -46,7 +50,7 @@ interface ICellProps {
 
 function Cell({ cell, clickCellHandler, clickContextCellHandler }: ICellProps) {
   const [icon, setIcon] = useState('');
-  const [showFrame, setShowFrame] = useState(true);
+  const [showWrap, setShowWrap] = useState(true);
 
   const clickButtonHandler = () => {
     clickCellHandler(cell);
@@ -61,33 +65,34 @@ function Cell({ cell, clickCellHandler, clickContextCellHandler }: ICellProps) {
     if (cell.status === 'flag-icon') setIcon(flagIcon);
     if (cell.status === 'quest-icon') setIcon(questIcon);
     if (cell.status === 'bomb-boom') {
-      setShowFrame(false);
+      setShowWrap(false);
       setIcon(bombIcon);
     }
     if (cell.status === 'bomb-open') {
-      setShowFrame(false);
+      setShowWrap(false);
       setIcon(bombIcon);
     }
     if (cell.status === 'open') {
       setIcon('');
-      setShowFrame(false);
+      setShowWrap(false);
     }
     if (cell.status === 'around-bombs') {
       setIcon('');
-      setShowFrame(false);
+      setShowWrap(false);
     }
     if (cell.status === 'wrong-bomb') {
       setIcon(wrongBomb);
-      setShowFrame(false);
+      setShowWrap(false);
     }
     if (cell.status === 'closed') {
       setIcon('');
-      setShowFrame(true);
+      setShowWrap(true);
     }
   }, [cell]);
 
   return (
     <CellStyled
+      variantBorder={showWrap ? 'big-outside' : 'cell'}
       status={cell.status}
       digit={cell.content}
       icon={icon}
@@ -95,11 +100,7 @@ function Cell({ cell, clickCellHandler, clickContextCellHandler }: ICellProps) {
       onClick={clickButtonHandler}
       onContextMenu={clickContextButtonHandler}
     >
-      <Frame variant={showFrame ? 'cell' : 'none'}>
-        {cell.status === 'around-bombs' && cell.content !== 0
-          ? cell.content
-          : ''}
-      </Frame>
+      {cell.status === 'around-bombs' && cell.content !== 0 ? cell.content : ''}
     </CellStyled>
   );
 }
