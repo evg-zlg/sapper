@@ -174,9 +174,7 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
     if (!Number(e.target.value) && e.target.value !== '') {
       return;
     }
-    console.log(minMaxFormValues.bombMin)
-    console.log(bombMax)
-    console.log(e.target.value)
+
     setBombValid(
       checkMinMaxValid(
         minMaxFormValues.bombMin,

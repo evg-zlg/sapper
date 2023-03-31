@@ -35,3 +35,8 @@ export interface IGameParams {
   boardParams: IBoardParams;
 }
 
+export interface IWinner {
+  id: number,
+  boardParams: IBoardParams,
+  timeLeft: number,
+}

@@ -61,3 +61,5 @@ export const minMaxFormValues = {
   bombMin: 1,
   bombMax: 999,
 };
+
+export const localStorageKey = 'winners';

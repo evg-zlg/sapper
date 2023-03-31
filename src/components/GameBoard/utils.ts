@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-type createGridProps = {
-  col: number;
-  row: number;
-}
-
-export function createGrid({ col, row }: createGridProps) {
-  console.log('col', col)
-  console.log('row', row)
-}
-=======
 import { initCell } from '../../const/const';
 import {
   IBoardParams,
@@ -410,7 +399,7 @@ export function openCellsAfterWin(source: ICell[][]): ICell[][] {
   return grid;
 }
 
-export function openBombAfterLost(source: ICell[][]): ICell[][] {
+export function openBombsAfterLost(source: ICell[][]): ICell[][] {
   const grid: ICell[][] = source.map((arr) => arr.slice());
   for (let i = 0; i < grid.length; i += 1) {
     for (let j = 0; j < grid[i].length; j += 1) {
@@ -425,4 +414,3 @@ export function openBombAfterLost(source: ICell[][]): ICell[][] {
 
   return grid;
 }
->>>>>>> 0d067eadc5f56363afd1b77b2594107c4fb96ac5
