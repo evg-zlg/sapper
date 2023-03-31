@@ -48,7 +48,7 @@ function Footer() {
       <Container>
         <>
           <GitHubLogo
-            href="https://github.com/evg-zlg"
+            href="https://github.com/evg-zlg/sapper"
             target="_blank"
             rel="noreferrer"
           >
