@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import { baseTheme } from '../../styles/theme';
 
 const Item = styled.div`
   display: grid;
-  grid-template-columns: 1fr 3fr 2fr 3fr;
+  grid-template-columns: 2fr 4fr 2fr 3fr;
 `;
 
 const ItemElement = styled.p`
@@ -10,7 +11,7 @@ const ItemElement = styled.p`
   font-weight: 600;
   text-align: center;
   padding: 5px 0;
-  border-bottom: 1px solid brown;
+  border-bottom: 2px solid ${baseTheme.colors.accentPrimary};
 
 `;
 

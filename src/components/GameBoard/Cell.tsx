@@ -1,5 +1,6 @@
 import { MouseEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { baseTheme } from '../../styles/theme';
 
 import { ICell, TCellStatus } from '../../types/types';
 import { palette } from '../../const/const';
@@ -10,7 +11,6 @@ import wrongBomb from './icons/wrong-bomb-icon.png';
 import flagIcon from './icons/flag-icon.png';
 import questIcon from './icons/quest-icon.png';
 
-
 interface ICellStyled {
   status: TCellStatus;
   digit: number;
@@ -18,7 +18,7 @@ interface ICellStyled {
 }
 
 const CellStyled = styled.button<ICellStyled>`
-outline: none;;
+  outline: none;
   width: 32px;
   height: 32px;
   border: none;
@@ -28,9 +28,9 @@ outline: none;;
   user-select: none;
   font-size: 24px;
   font-weight: 900;
-  border: 1px solid var(--border-secondary-color);
+  border: 1px solid ${baseTheme.colors.borderSecondary};
   background-color: ${(props) =>
-    props.status === 'bomb-boom' ? 'red' : 'inherit'};
+    props.status === 'bomb-boom' ? `${baseTheme.colors.boomBgCell}` : 'inherit'};
   background-image: url(${(props) => props.icon});
   background-position: center center;
   background-repeat: no-repeat;
@@ -39,22 +39,22 @@ outline: none;;
 `;
 
 interface ICellProps {
-  clickCellHandle: (cell: ICell) => void;
-  clickContextCellHandle: (cell: ICell) => void;
+  clickCellHandler: (cell: ICell) => void;
+  clickContextCellHandler: (cell: ICell) => void;
   cell: ICell;
 }
 
-function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
+function Cell({ cell, clickCellHandler, clickContextCellHandler }: ICellProps) {
   const [icon, setIcon] = useState('');
   const [showFrame, setShowFrame] = useState(true);
 
-  const clickButtonHandle = () => {
-    clickCellHandle(cell);
+  const clickButtonHandler = () => {
+    clickCellHandler(cell);
   };
 
-  const clickContextButtonHandle = (e: MouseEvent<HTMLButtonElement>) => {
+  const clickContextButtonHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    clickContextCellHandle(cell);
+    clickContextCellHandler(cell);
   };
 
   useEffect(() => {
@@ -87,20 +87,20 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
   }, [cell]);
 
   return (
-      <CellStyled
-        status={cell.status}
-        digit={cell.content}
-        icon={icon}
-        type="button"
-        onClick={clickButtonHandle}
-        onContextMenu={clickContextButtonHandle}
-      >
-        <Frame variant={showFrame ? 'cell' : 'none'}>
-          {cell.status === 'around-bombs' && cell.content !== 0
-            ? cell.content
-            : ''}
-        </Frame>
-      </CellStyled>
+    <CellStyled
+      status={cell.status}
+      digit={cell.content}
+      icon={icon}
+      type="button"
+      onClick={clickButtonHandler}
+      onContextMenu={clickContextButtonHandler}
+    >
+      <Frame variant={showFrame ? 'cell' : 'none'}>
+        {cell.status === 'around-bombs' && cell.content !== 0
+          ? cell.content
+          : ''}
+      </Frame>
+    </CellStyled>
   );
 }
 

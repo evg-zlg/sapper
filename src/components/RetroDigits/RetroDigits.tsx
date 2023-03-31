@@ -6,7 +6,7 @@ import { getDigitsFromNUmber } from './utils';
 const RetroDigitsStyled = styled.div`
   display: flex;
   width: fit-content;
-  transform: scale(0.9);
+  /* transform: scale(1); */
 `;
 
 interface IRetroDigits {

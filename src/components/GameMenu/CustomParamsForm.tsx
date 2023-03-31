@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import styled from 'styled-components';
+import { baseTheme } from '../../styles/theme';
 import { Frame } from '../Frame';
 
 import { useAppDispatch } from '../../hooks/redux';
@@ -28,14 +29,14 @@ const OutClickZone = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: var(--bg-modal-color);
+  background-color: ${baseTheme.colors.bgModal};
 `;
 
 const CustomParamsFormStyled = styled.form`
   width: 352px;
   padding: 10px;
   position: relative;
-  background-color: var(--bg-primery-color);
+  background-color: ${baseTheme.colors.bgPrimery};
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -43,7 +44,7 @@ const CustomParamsFormStyled = styled.form`
 
 const TitleForm = styled.h2`
   text-align: center;
-  border-bottom: 1px solid var(--primary-accent-color);
+  border-bottom: 1px solid ${baseTheme.colors.accentPrimary};
 `;
 
 const GridTemplate = styled.div`
@@ -52,7 +53,7 @@ const GridTemplate = styled.div`
   gap: 10px;
   grid-template-rows: 1fr 1fr 1fr;
   padding: 0 0 10px 0;
-  border-bottom: 1px solid var(--primary-accent-color);
+  border-bottom: 1px solid ${baseTheme.colors.accentPrimary};
 `;
 
 const Label = styled.label`
@@ -72,7 +73,7 @@ const Input = styled.input<IInput>`
   outline: none;
   border: 2px solid transparent;
   border-color: ${(props) =>
-    props.valid ? 'transparent' : 'var(--digit-primery-color)'};
+    props.valid ? 'transparent' : `${baseTheme.colors.digitPrimery}`};
 `;
 
 const Control = styled.div`
@@ -84,14 +85,14 @@ const Control = styled.div`
 const Button = styled.input`
   border: none;
   padding: 5px 10px;
-  background-color: var(--bg-primery-color);
+  background-color: ${baseTheme.colors.bgPrimery};
   cursor: pointer;
 `;
 
 const LabelError = styled.p`
   font-size: 20px;
   font-weight: 600;
-  color: var(--digit-primery-color);
+  color: ${baseTheme.colors.digitPrimery};
   position: absolute;
   right: 25px;
 `;

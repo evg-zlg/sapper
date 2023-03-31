@@ -163,7 +163,6 @@ function useGame() {
     if (timeLeft > 999) {
       dispatch(changePhase('lost'));
     }
-
   }, [timeLeft]);
 
   return {

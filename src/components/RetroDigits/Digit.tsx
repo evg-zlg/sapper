@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { baseTheme } from '../../styles/theme';
 
 //      0
 //     ---
@@ -13,7 +14,7 @@ import styled, { css } from 'styled-components';
 const DigitStyled = styled.div`
   width: 30px;
   height: 54px;
-  background-color: black;
+  background-color: ${baseTheme.colors.darkPrimary};
   position: relative;
 `;
 

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { Cell } from './Cell';
+import { baseTheme } from '../../styles/theme';
 
+import { Cell } from './Cell';
 import { ICell } from '../../types/types';
 import { Frame } from '../Frame';
 import { GamePanel } from './GamePanel';
@@ -17,7 +18,7 @@ const Board = styled.section`
   flex-direction: column;
   gap: 15px;
   align-items: stretch;
-  background-color: var(--bg-primery-color);
+  background-color: ${baseTheme.colors.bgPrimery};
 `;
 
 const GridTemplate = styled.div<IGridTemplateProps>`
@@ -58,8 +59,8 @@ function GameBoard() {
                 <Cell
                   key={cell.id}
                   cell={cell}
-                  clickCellHandle={clickCellHandler}
-                  clickContextCellHandle={clickContextCellHandler}
+                  clickCellHandler={clickCellHandler}
+                  clickContextCellHandler={clickContextCellHandler}
                 />
               )),
             )}

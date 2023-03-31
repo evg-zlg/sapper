@@ -1,5 +1,7 @@
 import { ReactElement } from 'react';
 import styled, { css } from 'styled-components';
+
+import { baseTheme } from '../../styles/theme';
 import { TFrameType } from '../../types/types';
 
 interface IFrameStyled {
@@ -7,7 +9,7 @@ interface IFrameStyled {
 }
 
 const insideStyled = css`
-  border-top-color: var(--border-secondary-color);
+  border-top-color: ${baseTheme.colors.borderSecondary};
   border-left-color: var(--border-secondary-color);
   border-right-color: var(--border-primery-color);
   border-bottom-color: var(--border-primery-color);

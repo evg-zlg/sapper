@@ -40,7 +40,7 @@ interface IRestarter {
 const Restarter = styled.button<IRestarter>`
   margin: 5px 0 0 0;
   width: 46px;
-  height: 40px;
+  height: 39px;
   border: none;
   background-image: url(${(props) => props.smile});
   background-size: contain;

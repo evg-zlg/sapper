@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import styled from 'styled-components';
+import { baseTheme } from '../../styles/theme';
+
 import { levels, menuButtons } from '../../const/const';
 import { TLevelType } from '../../types/types';
 import { getBoardParamsByLevelType } from '../../hooks/game/utils';
@@ -21,7 +23,7 @@ const Button = styled.button`
   padding: 5px 10px;
   width: 70px;
   text-transform: capitalize;
-  background-color: var(--bg-primery-color);
+  background-color: ${baseTheme.colors.bgPrimery};
   border: none;
   cursor: pointer;
   > div {

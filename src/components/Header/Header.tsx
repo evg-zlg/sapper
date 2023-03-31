@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+
 import styled from 'styled-components';
+import { baseTheme } from '../../styles/theme';
 import { APPRoute } from '../../const/const';
 import { Container } from '../Container';
 
@@ -7,7 +9,7 @@ const HeaderStyled = styled.header`
   margin: 0 0 10px 0;
   padding: 0 5px;
   height: 80px;
-  border-bottom: 1px solid var(--primary-accent-color);
+  border-bottom: 1px solid ${baseTheme.colors.accentPrimary};
 `;
 
 const Nav = styled.nav`
@@ -42,8 +44,8 @@ const Li = styled.li`
     border-radius: 3px;
     transition: all 0.3s ease 0s;
     &:hover {
-      background-color: var(--primary-accent-color);
-      color: var(--primary-light-color);
+      background-color: ${baseTheme.colors.accentPrimary};
+      color: ${baseTheme.colors.lightPrimary};
     }
 
     @media (max-width: 425px) {
