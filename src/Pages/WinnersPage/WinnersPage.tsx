@@ -11,16 +11,19 @@ const Main = styled.main`
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  margin: 0 0 20px 0;
 `;
 
 function WinnersPage() {
   return (
-    <Container>
-      <Main>
-        <Title>Best results</Title>
-        <WinnersTable />
-      </Main>
-    </Container>
+    <Main>
+      <Container>
+        <>
+          <Title>Best results</Title>
+          <WinnersTable />
+        </>
+      </Container>
+    </Main>
   );
 }
 

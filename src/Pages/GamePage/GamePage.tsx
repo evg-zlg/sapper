@@ -8,16 +8,19 @@ const Main = styled.main`
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  margin: 0 0 20px 0;
 `;
 
 function GamePage() {
   return (
-    <Container>
-      <Main>
-        <GameMenu />
-        <GameBoard />
-      </Main>
-    </Container>
+    <Main>
+      <Container>
+        <>
+          <GameMenu />
+          <GameBoard />
+        </>
+      </Container>
+    </Main>
   );
 }
 

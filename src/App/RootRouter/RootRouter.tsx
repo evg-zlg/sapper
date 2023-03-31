@@ -9,6 +9,7 @@ import { APPRoute, localStorageKey } from '../../const/const';
 import { GamePage } from '../../Pages/GamePage';
 import { WinnersPage } from '../../Pages/WinnersPage';
 import { IWinner } from '../../types/types';
+import { Footer } from '../../components/Footer/Footer';
 
 function RootRouter() {
   const dispatch = useAppDispatch();
@@ -38,6 +39,7 @@ function RootRouter() {
         <Route path={APPRoute.main} element={<GamePage />} />
         <Route path={APPRoute.winners} element={<WinnersPage />} />
       </Routes>
+      <Footer />
     </>
   );
 }
