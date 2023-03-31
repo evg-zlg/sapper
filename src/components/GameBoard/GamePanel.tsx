@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-
 import styled from 'styled-components';
-import { Frame } from '../Frame';
 
-import { useAppSelector, useAppDispatch } from '../../hooks/redux';
-import { changePhase, selectState } from '../../store/reducers/gameSlice';
+import { useAppDispatch } from '../../hooks/redux';
+import { changePhase } from '../../store/reducers/gameSlice';
+
+import { Frame } from '../Frame';
+import { RetroDigits } from '../RetroDigits';
+import { TGamePhase } from '../../types/types';
 
 import smilePlayIcon from './icons/smile-play-icon.png';
 import smileWinIcon from './icons/smile-win-icon.png';
 import smileLostIcon from './icons/smile-lost-icon.png';
-import { RetroDigits } from '../RetroDigits';
 
 const Panel = styled.div`
   width: 100%;
@@ -50,10 +51,15 @@ const Restarter = styled.button<IRestarter>`
 `;
 const Timer = styled.div``;
 
-function GamePanel() {
-  const dispatch = useAppDispatch();
-  const { phase, bombsLeft, timeLeft } = useAppSelector(selectState);
+interface IGamePanel {
+  phase: TGamePhase,
+  bombsLeft: number,
+  timeLeft: number,
+}
+
+function GamePanel({bombsLeft, phase, timeLeft}: IGamePanel) {
   const [smile, setSmile] = useState('');
+  const dispatch = useAppDispatch();
 
   const clickRestartHandler = () => {
     dispatch(changePhase('new'));

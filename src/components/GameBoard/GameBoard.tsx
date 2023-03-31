@@ -29,7 +29,15 @@ const GridTemplate = styled.div<IGridTemplateProps>`
 `;
 
 function GameBoard() {
-  const { cells, boardParams, clickLeftButton, clickRightButton } = useGame();
+  const {
+    cells,
+    boardParams,
+    bombsLeft,
+    phase,
+    timeLeft,
+    clickLeftButton,
+    clickRightButton,
+  } = useGame();
 
   const clickCellHandler = (cell: ICell) => {
     clickLeftButton(cell);
@@ -42,7 +50,7 @@ function GameBoard() {
   return (
     <Frame variant="outside">
       <Board>
-        <GamePanel />
+        <GamePanel bombsLeft={bombsLeft} phase={phase} timeLeft={timeLeft} />
         <Frame variant="inside">
           <GridTemplate col={boardParams.col} row={boardParams.row}>
             {cells.map((column) =>

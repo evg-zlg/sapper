@@ -26,8 +26,9 @@ import { addWinner } from '../../store/reducers/winnersSlice';
 
 function useGame() {
   const dispatch = useAppDispatch();
-  const { phase, boardParams, cells, bombsLeft } = useAppSelector(selectState);
-  const { startTimer, stopTimer, timeLeft } = useTimer();
+  const { phase, boardParams, cells, bombsLeft, timeLeft } =
+    useAppSelector(selectState);
+  const { startTimer, stopTimer } = useTimer();
 
   const prepareNewGame = () => {
     const initGrid = createInitGrid({ ...boardParams });
@@ -142,8 +143,8 @@ function useGame() {
 
   useEffect(() => {
     if (phase === 'new' || phase === 'change-lvl') {
-      restartGame();
       stopTimer();
+      restartGame();
       dispatch(changeTimeleft(0));
     }
     if (phase === 'win') {
@@ -161,10 +162,8 @@ function useGame() {
   useEffect(() => {
     if (timeLeft > 999) {
       dispatch(changePhase('lost'));
-      return;
     }
 
-    dispatch(changeTimeleft(timeLeft));
   }, [timeLeft]);
 
   return {
@@ -173,6 +172,9 @@ function useGame() {
     clickLeftButton,
     clickRightButton,
     boardParams,
+    bombsLeft,
+    phase,
+    timeLeft,
   };
 }
 

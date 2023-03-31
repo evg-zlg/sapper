@@ -1,36 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+
+import { useAppDispatch, useAppSelector } from '../redux';
+import { changeTimeleft, updateTimerId } from '../../store/reducers/gameSlice';
 
 function useTimer() {
+  const dispatch = useAppDispatch();
+  const { timerId: timerIdFromStore } = useAppSelector(
+    (state) => state.gameState,
+  );
+
   const [timeLeft, setTimeLeft] = useState(0);
-  const [timerId, setTimerId] = useState(0);
   let startedTime = new Date();
 
-  const timerFunc = () => {
+  const timer = () => {
     const now = new Date();
-    const letftTime = Math.trunc((now.valueOf() - startedTime.valueOf()) / 1000);
-    setTimeLeft(letftTime);
+    const newTimeLeft = Math.trunc(
+      (now.valueOf() - startedTime.valueOf()) / 1000,
+    );
+    setTimeLeft(newTimeLeft);
+    dispatch(changeTimeleft(newTimeLeft));
   };
 
   const startTimer = () => {
     startedTime = new Date();
-    clearInterval(timerId);
-    setTimerId(setInterval(timerFunc, 1000));
+    const newTimerId = setInterval(timer, 1000);
+    dispatch(updateTimerId(newTimerId));
   };
 
   const stopTimer = () => {
-    setTimerId(0);
-    clearInterval(timerId);
+    clearInterval(timerIdFromStore);
   };
-
-  useEffect(() => {
-    setTimerId(0);
-
-    return () => {
-      clearInterval(timerId);
-      setTimerId(0);
-      setTimeLeft(0);
-    };
-  }, []);
 
   return { timeLeft, startTimer, stopTimer };
 }

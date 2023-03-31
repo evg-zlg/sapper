@@ -87,7 +87,6 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
   }, [cell]);
 
   return (
-    // <CellFrame status={cell.status}>
       <CellStyled
         status={cell.status}
         digit={cell.content}
@@ -102,7 +101,6 @@ function Cell({ cell, clickCellHandle, clickContextCellHandle }: ICellProps) {
             : ''}
         </Frame>
       </CellStyled>
-    // </CellFrame>
   );
 }
 

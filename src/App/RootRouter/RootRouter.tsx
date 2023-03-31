@@ -14,14 +14,20 @@ function RootRouter() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // check winners in localStorage
     try {
       const lsValue = localStorage.getItem(localStorageKey);
       if (lsValue !== null) {
         const winners: IWinner[] = JSON.parse(lsValue);
-        dispatch(changeWinners(winners))
+        dispatch(changeWinners(winners));
       }
     } catch (e) {
-      console.error('Error load from localStorage');
+      const message = 'Error load from localStorage';
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      } else {
+        throw new Error(message);
+      }
     }
   }, []);
 
