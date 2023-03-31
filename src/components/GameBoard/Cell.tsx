@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { baseTheme } from '../../styles/theme';
 
+import { baseTheme } from '../../styles/theme';
 import { ICell, TBorderShadowType, TCellStatus } from '../../types/types';
 import { palette } from '../../const/const';
 
@@ -62,31 +62,42 @@ function Cell({ cell, clickCellHandler, clickContextCellHandler }: ICellProps) {
   };
 
   useEffect(() => {
-    if (cell.status === 'flag-icon') setIcon(flagIcon);
-    if (cell.status === 'quest-icon') setIcon(questIcon);
-    if (cell.status === 'bomb-boom') {
-      setShowWrap(false);
-      setIcon(bombIcon);
-    }
-    if (cell.status === 'bomb-open') {
-      setShowWrap(false);
-      setIcon(bombIcon);
-    }
-    if (cell.status === 'open') {
-      setIcon('');
-      setShowWrap(false);
-    }
-    if (cell.status === 'around-bombs') {
-      setIcon('');
-      setShowWrap(false);
-    }
-    if (cell.status === 'wrong-bomb') {
-      setIcon(wrongBomb);
-      setShowWrap(false);
-    }
-    if (cell.status === 'closed') {
-      setIcon('');
-      setShowWrap(true);
+    switch (cell.status) {
+      case 'flag-icon':
+        setIcon(flagIcon);
+        break;
+      case 'quest-icon':
+        setIcon(questIcon);
+        break;
+      case 'bomb-boom':
+        setShowWrap(false);
+        setIcon(bombIcon);
+        break;
+      case 'bomb-open':
+        setShowWrap(false);
+        setIcon(bombIcon);
+        break;
+      case 'open':
+        setIcon('');
+        setShowWrap(false);
+        break;
+      case 'around-bombs':
+        setIcon('');
+        setShowWrap(false);
+        break;
+      case 'wrong-bomb':
+        setIcon(wrongBomb);
+        setShowWrap(false);
+        break;
+      case 'closed':
+        setIcon('');
+        setShowWrap(true);
+        break;
+
+      default:
+        setIcon('');
+        setShowWrap(true);
+        break;
     }
   }, [cell]);
 

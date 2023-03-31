@@ -7,10 +7,11 @@ import {
   useState,
 } from 'react';
 import styled from 'styled-components';
-import { baseTheme } from '../../styles/theme';
 
 import { useAppDispatch } from '../../hooks/redux';
 import { changeLevel } from '../../store/reducers/gameSlice';
+
+import { baseTheme } from '../../styles/theme';
 import { IBoardParams, TLevelType } from '../../types/types';
 import { minMaxFormValues } from '../../const/const';
 import { checkMinMaxValid } from './utils';
@@ -115,15 +116,20 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
   const [rowValid, setRowValid] = useState(true);
 
   const [bombValue, setBombValue] = useState('');
-  const [bombMax, setBombMax] = useState<number>(
-    () => minMaxFormValues.colMin * minMaxFormValues.rowMin,
-  );
+  const [bombMax, setBombMax] = useState<number>(0);
   const [bombValid, setBombValid] = useState(true);
 
   const submitFormHandler = (e: FormEvent) => {
     e.preventDefault();
 
-    if (colValid && rowValid && bombValid) {
+    if (
+      colValid &&
+      rowValid &&
+      bombValid &&
+      colValue !== '' &&
+      rowValue !== '' &&
+      bombValue !== ''
+    ) {
       const boardParams: IBoardParams = {
         bombs: Number(bombValue),
         col: Number(colValue),
@@ -153,6 +159,7 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
         e.target.value,
       ),
     );
+
     setBombValid(true);
     setShowValidError(false);
     setColValue(e.target.value);
@@ -162,6 +169,7 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
     if (!Number(e.target.value) && e.target.value !== '') {
       return;
     }
+
     setRowValid(
       checkMinMaxValid(
         minMaxFormValues.rowMin,
@@ -169,6 +177,7 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
         e.target.value,
       ),
     );
+
     setBombValid(true);
     setShowValidError(false);
     setRowValue(e.target.value);
@@ -181,12 +190,13 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
     setBombValid(
       checkMinMaxValid(minMaxFormValues.bombMin, bombMax, e.target.value),
     );
+
     setShowValidError(false);
     setBombValue(e.target.value);
   };
 
   useEffect(() => {
-    // additinal valid bombs count ( 20% from countCells)
+    // additinal valid bombs count (20% from count cells)
     const countCells = Number(colValue) * Number(rowValue);
     const newBombMax = Math.trunc(countCells * 0.2);
     if (newBombMax > minMaxFormValues.bombMax || newBombMax < 1) {

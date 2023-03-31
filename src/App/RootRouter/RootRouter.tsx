@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { useAppDispatch } from '../../hooks/redux';
 import { changeWinners } from '../../store/reducers/winnersSlice';

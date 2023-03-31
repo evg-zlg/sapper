@@ -1,4 +1,5 @@
 import { css } from 'styled-components';
+
 import { baseTheme } from '../theme';
 import { TBorderShadowType } from '../../types/types';
 
@@ -42,7 +43,9 @@ interface IBorderWithShadow {
   variantBorder: TBorderShadowType;
 }
 
-const BorderWithShadow = ( {variantBorder}: IBorderWithShadow) => css<IBorderWithShadow>`
+const BorderWithShadow = ({
+  variantBorder,
+}: IBorderWithShadow) => css<IBorderWithShadow>`
   border-radius: 2px;
   border-width: 3px;
   border-style: solid;

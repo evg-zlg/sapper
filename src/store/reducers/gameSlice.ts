@@ -61,7 +61,7 @@ export const gameSlice = createSlice({
     },
     updateTimerId(state, actions: PayloadAction<number>) {
       state.timerId = actions.payload;
-    }
+    },
   },
 });
 

@@ -38,7 +38,6 @@ function useGame() {
   const startNewGame = (cell: ICell) => {
     if (cell.status === 'flag-icon') return;
 
-    stopTimer();
     startTimer();
 
     const filledGrid: ICell[][] = fillGrid({
@@ -47,6 +46,7 @@ function useGame() {
       currentCellPosition: cell.position,
     });
     dispatch(changePhase('play'));
+
     const { i, j } = cell.position;
     if (filledGrid[i][j].content === 0) {
       dispatch(changeCells(openArea(filledGrid, filledGrid[i][j])));
@@ -62,13 +62,12 @@ function useGame() {
       timeLeft,
       boardParams,
     };
-
     dispatch(changePhase('win'));
     dispatch(addWinner(winner));
   };
 
   const makeMove = (cell: ICell) => {
-    // do nothing if flag
+    // do nothing if flag-icon
     if (cell.status === 'flag-icon') return;
 
     let isVictory = false;
@@ -79,13 +78,6 @@ function useGame() {
       dispatch(updateOneCell({ ...cell, status: 'bomb-boom' }));
     }
 
-    // open area if click in empty cell
-    if (cell.content === 0) {
-      const newCells = openArea(cells, cell);
-      dispatch(changeCells(newCells));
-      isVictory = checkVictory(newCells, bombsLeft, null);
-    }
-
     // open one cell if click in cell with digit
     if (cell.content > 0) {
       dispatch(updateOneCell({ ...cell, status: 'around-bombs' }));
@@ -93,6 +85,14 @@ function useGame() {
         ...cell,
         status: 'around-bombs',
       });
+    }
+
+    // open area if click in empty cell
+    if (cell.content === 0) {
+      const newCells = openArea(cells, cell);
+      dispatch(changeCells(newCells));
+      // check victory
+      isVictory = checkVictory(newCells, bombsLeft, null);
     }
 
     if (isVictory) {
@@ -111,9 +111,9 @@ function useGame() {
 
   const clickRightButton = (cell: ICell) => {
     if (phase !== 'lost' && phase !== 'win') {
-      const status = defineNextStatusCell(cell);
       let isVictory = false;
 
+      const status = defineNextStatusCell(cell);
       if (status !== null) {
         dispatch(updateOneCell({ ...cell, status }));
       }
@@ -123,6 +123,7 @@ function useGame() {
       if (status === 'flag-icon') countFlags += 1;
       dispatch(changeBombsLeft(boardParams.bombs - countFlags));
 
+      // check victory
       isVictory = checkVictory(
         cells,
         boardParams.bombs - countFlags,

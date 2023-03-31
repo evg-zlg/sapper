@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { baseTheme } from '../../styles/theme';
 
+import { baseTheme } from '../../styles/theme';
 import { IWinner } from '../../types/types';
 
 const Item = styled.div`

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { baseTheme } from '../../styles/theme';
 
+import { baseTheme } from '../../styles/theme';
 import { Cell } from './Cell';
 import { ICell, TBorderShadowType } from '../../types/types';
 import { GamePanel } from './GamePanel';

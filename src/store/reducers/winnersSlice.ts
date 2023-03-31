@@ -26,26 +26,3 @@ export const winnersSlice = createSlice({
 export const { addWinner, changeWinners } = winnersSlice.actions;
 
 export const winnersState = winnersSlice.reducer;
-
-// function loadStateFromLocalStorage() {
-//   try {
-//     const lsValue = localStorage.getItem(localStorageKey);
-//     if (!lsValue) return undefined;
-//     return JSON.parse(lsValue);
-//   } catch (e) {
-//     return new Error('Error load from localStorage');
-//   }
-// }
-// function saveStateToLocalStorage(
-//   state: CombinedState<{
-//     winnersState: initialStateProps;
-//     gameState: initialStateProps;
-//   }>,
-// ) {
-//   try {
-//     const lsValue = JSON.stringify(state.winnersState.winners);
-//     localStorage.setItem(localStorageKey, lsValue);
-//   } catch (e) {
-//     // do nothing
-//   }
-// }

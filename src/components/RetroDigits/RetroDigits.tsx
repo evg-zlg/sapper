@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
 import { Digit } from './Digit';
 import { getDigitsFromNUmber } from './utils';
 
 const RetroDigitsStyled = styled.div`
   display: flex;
   width: fit-content;
-  /* transform: scale(1); */
 `;
 
 interface IRetroDigits {

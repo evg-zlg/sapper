@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-
 import styled from 'styled-components';
+
 import { baseTheme } from '../../styles/theme';
 import { APPRoute } from '../../const/const';
 import { Container } from '../Container';
@@ -23,10 +23,6 @@ const Ul = styled.ul`
   display: flex;
   gap: 10px;
 `;
-
-interface ILi {
-  active: boolean;
-}
 
 const Li = styled.li`
   list-style-type: none;

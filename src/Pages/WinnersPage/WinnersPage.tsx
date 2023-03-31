@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+
 import { WinnersTable } from '../../components/WinnersTable';
 import { Walpapper } from '../../styles/components/Walpapper';
-
 
 const Main = styled.main`
   display: flex;
