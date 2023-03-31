@@ -3,6 +3,7 @@ import {
   Dispatch,
   FormEvent,
   SetStateAction,
+  useEffect,
   useState,
 } from 'react';
 import styled from 'styled-components';
@@ -11,6 +12,8 @@ import { Frame } from '../Frame';
 import { useAppDispatch } from '../../hooks/redux';
 import { changeLevel } from '../../store/reducers/gameSlice';
 import { IBoardParams, TLevelType } from '../../types/types';
+import { minMaxFormValues } from '../../const/const';
+import { checkMinMaxValid } from './utils';
 
 const CustomParamsModal = styled.div`
   position: fixed;
@@ -36,7 +39,6 @@ const CustomParamsFormStyled = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  
 `;
 
 const TitleForm = styled.h2`
@@ -51,7 +53,6 @@ const GridTemplate = styled.div`
   grid-template-rows: 1fr 1fr 1fr;
   padding: 0 0 10px 0;
   border-bottom: 1px solid var(--primary-accent-color);
-
 `;
 
 const Label = styled.label`
@@ -61,14 +62,22 @@ const Label = styled.label`
   font-size: 18px;
 `;
 
-const Input = styled.input`
-  height: 30px;
+interface IInput {
+  valid: boolean;
+}
+
+const Input = styled.input<IInput>`
   width: 100%;
+  padding: 5px 5px;
   outline: none;
+  border: 2px solid transparent;
+  border-color: ${(props) =>
+    props.valid ? 'transparent' : 'var(--digit-primery-color)'};
 `;
 
 const Control = styled.div`
   display: flex;
+  align-items: center;
   gap: 10px;
 `;
 
@@ -79,6 +88,14 @@ const Button = styled.input`
   cursor: pointer;
 `;
 
+const LabelError = styled.p`
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--digit-primery-color);
+  position: absolute;
+  right: 25px;
+`;
+
 interface ICustomParamsForm {
   setShowCustomParamsForm: Dispatch<SetStateAction<boolean>>;
 }
@@ -86,14 +103,24 @@ interface ICustomParamsForm {
 function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
   const dispatch = useAppDispatch();
 
+  const [showValidError, setShowValidError] = useState(false);
+
   const [colValue, setColValue] = useState('');
+  const [colValid, setColValid] = useState(true);
+
   const [rowValue, setRowValue] = useState('');
+  const [rowValid, setRowValid] = useState(true);
+
   const [bombValue, setBombValue] = useState('');
-  const [allValid] = useState(true);
+  const [bombMax, setBombMax] = useState<number>(
+    () => minMaxFormValues.colMin * minMaxFormValues.rowMin,
+  );
+  const [bombValid, setBombValid] = useState(true);
 
   const submitFormHandler = (e: FormEvent) => {
     e.preventDefault();
-    if (allValid) {
+
+    if (colValid && rowValid && bombValid) {
       const boardParams: IBoardParams = {
         bombs: Number(bombValue),
         col: Number(colValue),
@@ -102,6 +129,8 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
       const currentLevel: TLevelType = 'custom';
       dispatch(changeLevel({ currentLevel, boardParams }));
       setShowCustomParamsForm(false);
+    } else {
+      setShowValidError(true);
     }
   };
 
@@ -110,24 +139,68 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
   };
 
   const colInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!Number(e.target.value)) {
+    if (!Number(e.target.value) && e.target.value !== '') {
       return;
     }
+
+    setColValid(
+      checkMinMaxValid(
+        minMaxFormValues.colMin,
+        minMaxFormValues.colMax,
+        e.target.value,
+      ),
+    );
+    setBombValid(true);
+    setShowValidError(false);
     setColValue(e.target.value);
   };
 
   const rowInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!Number(e.target.value)) {
+    if (!Number(e.target.value) && e.target.value !== '') {
       return;
     }
+    setRowValid(
+      checkMinMaxValid(
+        minMaxFormValues.rowMin,
+        minMaxFormValues.rowMax,
+        e.target.value,
+      ),
+    );
+    setBombValid(true);
+    setShowValidError(false);
     setRowValue(e.target.value);
   };
   const bombInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!Number(e.target.value)) {
+    if (!Number(e.target.value) && e.target.value !== '') {
       return;
     }
+    console.log(minMaxFormValues.bombMin)
+    console.log(bombMax)
+    console.log(e.target.value)
+    setBombValid(
+      checkMinMaxValid(
+        minMaxFormValues.bombMin,
+        bombMax,
+        e.target.value,
+      ),
+    );
+    setShowValidError(false);
     setBombValue(e.target.value);
   };
+
+  useEffect(() => {
+    // additinal valid bombs count ( 20% from countCells)
+    const countCells = Number(colValue) * Number(rowValue);
+    const newBombMax = Math.trunc(countCells * 0.20);
+    if (
+      newBombMax > minMaxFormValues.bombMax ||
+      newBombMax < 1
+    ) {
+      setBombMax(minMaxFormValues.bombMax);
+      return;
+    }
+    setBombMax(newBombMax);
+  }, [colValue, rowValue]);
 
   return (
     <CustomParamsModal>
@@ -137,34 +210,37 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
           onSubmit={submitFormHandler}
           onReset={resetFormHandler}
         >
-          <TitleForm>Game options </TitleForm>
+          <TitleForm>Game options</TitleForm>
           <GridTemplate>
-            <Label htmlFor="input-col">Width:</Label>
+            <Label htmlFor="input-row">Width:</Label>
             <Input
+              valid={rowValid}
               type="text"
               id="input-row"
               value={rowValue}
               onChange={rowInputHandler}
             />
-            <Label>(min - 10, max - 50)</Label>
+            <Label>{`(min - ${minMaxFormValues.rowMin}, max - ${minMaxFormValues.rowMax})`}</Label>
 
             <Label htmlFor="input-col">Height:</Label>
             <Input
+              valid={colValid}
               type="text"
               id="input-col"
               value={colValue}
               onChange={colInputHandler}
             />
-            <Label>(min - 10, max - 25)</Label>
+            <Label>{`(min - ${minMaxFormValues.colMin}, max - ${minMaxFormValues.colMax})`}</Label>
 
             <Label htmlFor="input-bomb">Bombs:</Label>
             <Input
+              valid={bombValid}
               type="text"
               id="input-bomb"
               value={bombValue}
               onChange={bombInputHandler}
             />
-            <Label>(min - 1, max - 999)</Label>
+            <Label>{`(min - ${minMaxFormValues.bombMin}, max - ${bombMax})`}</Label>
           </GridTemplate>
 
           <Control>
@@ -174,6 +250,9 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
             <Frame variant="form-outside">
               <Button type="reset" value="Cancel" />
             </Frame>
+            {showValidError && (
+              <LabelError>Check values</LabelError>
+            )}
           </Control>
         </CustomParamsFormStyled>
       </Frame>

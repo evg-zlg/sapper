@@ -18,6 +18,7 @@ interface ICellStyled {
 }
 
 const CellStyled = styled.button<ICellStyled>`
+outline: none;;
   width: 32px;
   height: 32px;
   border: none;
