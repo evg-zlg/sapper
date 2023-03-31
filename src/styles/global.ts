@@ -22,7 +22,9 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  /* overflow: hidden; */
+  overflow-y: auto;
+  
   > main {
     flex: 1 1 auto;
   }

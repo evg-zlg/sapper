@@ -8,6 +8,8 @@ import { useGame } from '../../hooks/game/useGame';
 import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
 
 const Board = styled.section`
+  width: fit-content;
+  margin: 0 auto;
   padding: 15px;
   display: flex;
   flex-direction: column;

@@ -13,20 +13,30 @@ import { CustomParamsForm } from './CustomParamsForm';
 import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
 
 const Menu = styled.menu`
-  margin: 0 auto;
+  margin: 0 auto 10px;
   width: fit-content;
   display: flex;
   gap: 20px;
+
+  @media (${baseTheme.brakePoint.sm}) {
+    gap: 10px;
+  }
 `;
 
 const Button = styled.button`
   padding: 5px 10px;
-  width: 70px;
+  min-width: 80px;
+  font-size: 1rem;
   text-transform: capitalize;
   background-color: ${baseTheme.colors.bgPrimery};
   border: none;
   cursor: pointer;
   ${BorderWithShadow}
+
+  @media (${baseTheme.brakePoint.sm}) {
+    font-size: 0.75rem;
+    min-width: 70px;
+  }
 `;
 
 function GameMenu() {

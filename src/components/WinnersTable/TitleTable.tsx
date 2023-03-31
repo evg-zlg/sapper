@@ -12,6 +12,7 @@ const ItemElement = styled.p`
   text-align: center;
   padding: 5px 0;
   border-bottom: 2px solid ${baseTheme.colors.accentPrimary};
+  border-top: 2px solid ${baseTheme.colors.accentPrimary};
 
 `;
 

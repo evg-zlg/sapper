@@ -6,7 +6,6 @@ import { APPRoute } from '../../const/const';
 import { Container } from '../Container';
 
 const HeaderStyled = styled.header`
-  margin: 0 0 10px 0;
   padding: 0 5px;
   height: 80px;
   border-bottom: 1px solid ${baseTheme.colors.accentPrimary};
@@ -18,10 +17,6 @@ const Nav = styled.nav`
   align-items: center;
   justify-content: center;
   gap: 30px;
-
-  @media (max-width: 725px) {
-    justify-content: space-between;
-  }
 `;
 
 const Ul = styled.ul`
@@ -38,7 +33,7 @@ const Li = styled.li`
 
   a {
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     color: inherit;
     padding: 5px 10px;
     border-radius: 3px;
@@ -48,8 +43,8 @@ const Li = styled.li`
       color: ${baseTheme.colors.lightPrimary};
     }
 
-    @media (max-width: 425px) {
-      font-size: 1rem;
+    @media (${baseTheme.brakePoint.sm}) {
+      font-size: 1.25rem;
     }
   }
 `;
