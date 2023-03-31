@@ -9,7 +9,7 @@ import { APPRoute, localStorageKey } from '../../const/const';
 import { GamePage } from '../../Pages/GamePage';
 import { WinnersPage } from '../../Pages/WinnersPage';
 import { IWinner } from '../../types/types';
-import { Footer } from '../../components/Footer/Footer';
+import { Footer } from '../../components/Footer';
 
 function RootRouter() {
   const dispatch = useAppDispatch();
