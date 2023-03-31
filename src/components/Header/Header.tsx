@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { baseTheme } from '../../styles/theme';
 import { APPRoute } from '../../const/const';
 import { Container } from '../Container';
 
 const HeaderStyled = styled.header`
-  margin: 0 0 10px 0;
   padding: 0 5px;
   height: 80px;
-  border-bottom: 1px solid var(--primary-accent-color);
+  border-bottom: 1px solid ${baseTheme.colors.accentPrimary};
 `;
 
 const Nav = styled.nav`
@@ -16,10 +17,6 @@ const Nav = styled.nav`
   align-items: center;
   justify-content: center;
   gap: 30px;
-
-  @media (max-width: 725px) {
-    justify-content: space-between;
-  }
 `;
 
 const Ul = styled.ul`
@@ -32,45 +29,26 @@ const Li = styled.li`
 
   a {
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     color: inherit;
     padding: 5px 10px;
     border-radius: 3px;
-    transition: all 0.2s ease 0s;
+    transition: all 0.3s ease 0s;
     &:hover {
-      background-color: var(--bg-link-color);
+      background-color: ${baseTheme.colors.accentPrimary};
+      color: ${baseTheme.colors.lightPrimary};
     }
 
-    @media (max-width: 425px) {
-      font-size: 1rem;
+    @media (${baseTheme.brakePoint.sm}) {
+      font-size: 1.25rem;
     }
-  }
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 3px;
-  border: none;
-  background-color: var(--primary-accent-color);
-  color: var(--primary-light-color);
-  font-size: 1.25rem;
-  transition: all 0.1s ease 0s;
-  &:hover {
-    box-shadow: 2px -2px 5px var(--shadow-light-color),
-      0px 2px 5px var(--shadow-light-color),
-      -2px 0px 5px var(--shadow-light-color);
-  }
-
-  @media (max-width: 425px) {
-    font-size: 1rem;
   }
 `;
 
 function Header() {
   return (
-    <Container>
-      <HeaderStyled>
+    <HeaderStyled>
+      <Container>
         <Nav>
           <Ul>
             <Li>
@@ -80,10 +58,9 @@ function Header() {
               <Link to={APPRoute.winners}>Winners</Link>
             </Li>
           </Ul>
-          <Button type="button">Options and restart</Button>
         </Nav>
-      </HeaderStyled>
-    </Container>
+      </Container>
+    </HeaderStyled>
   );
 }
 

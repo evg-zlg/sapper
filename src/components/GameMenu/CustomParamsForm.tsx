@@ -7,13 +7,15 @@ import {
   useState,
 } from 'react';
 import styled from 'styled-components';
-import { Frame } from '../Frame';
 
 import { useAppDispatch } from '../../hooks/redux';
 import { changeLevel } from '../../store/reducers/gameSlice';
+
+import { baseTheme } from '../../styles/theme';
 import { IBoardParams, TLevelType } from '../../types/types';
 import { minMaxFormValues } from '../../const/const';
 import { checkMinMaxValid } from './utils';
+import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
 
 const CustomParamsModal = styled.div`
   position: fixed;
@@ -28,22 +30,23 @@ const OutClickZone = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: var(--bg-modal-color);
+  background-color: ${baseTheme.colors.bgModal};
 `;
 
 const CustomParamsFormStyled = styled.form`
   width: 352px;
   padding: 10px;
   position: relative;
-  background-color: var(--bg-primery-color);
+  background-color: ${baseTheme.colors.bgPrimery};
   display: flex;
   flex-direction: column;
   gap: 10px;
+  ${BorderWithShadow}
 `;
 
 const TitleForm = styled.h2`
   text-align: center;
-  border-bottom: 1px solid var(--primary-accent-color);
+  border-bottom: 1px solid ${baseTheme.colors.accentPrimary};
 `;
 
 const GridTemplate = styled.div`
@@ -52,7 +55,7 @@ const GridTemplate = styled.div`
   gap: 10px;
   grid-template-rows: 1fr 1fr 1fr;
   padding: 0 0 10px 0;
-  border-bottom: 1px solid var(--primary-accent-color);
+  border-bottom: 1px solid ${baseTheme.colors.accentPrimary};
 `;
 
 const Label = styled.label`
@@ -72,7 +75,7 @@ const Input = styled.input<IInput>`
   outline: none;
   border: 2px solid transparent;
   border-color: ${(props) =>
-    props.valid ? 'transparent' : 'var(--digit-primery-color)'};
+    props.valid ? 'transparent' : `${baseTheme.colors.digitPrimery}`};
 `;
 
 const Control = styled.div`
@@ -84,14 +87,15 @@ const Control = styled.div`
 const Button = styled.input`
   border: none;
   padding: 5px 10px;
-  background-color: var(--bg-primery-color);
+  background-color: ${baseTheme.colors.bgPrimery};
   cursor: pointer;
+  ${BorderWithShadow}
 `;
 
 const LabelError = styled.p`
   font-size: 20px;
   font-weight: 600;
-  color: var(--digit-primery-color);
+  color: ${baseTheme.colors.digitPrimery};
   position: absolute;
   right: 25px;
 `;
@@ -112,15 +116,20 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
   const [rowValid, setRowValid] = useState(true);
 
   const [bombValue, setBombValue] = useState('');
-  const [bombMax, setBombMax] = useState<number>(
-    () => minMaxFormValues.colMin * minMaxFormValues.rowMin,
-  );
+  const [bombMax, setBombMax] = useState<number>(0);
   const [bombValid, setBombValid] = useState(true);
 
   const submitFormHandler = (e: FormEvent) => {
     e.preventDefault();
 
-    if (colValid && rowValid && bombValid) {
+    if (
+      colValid &&
+      rowValid &&
+      bombValid &&
+      colValue !== '' &&
+      rowValue !== '' &&
+      bombValue !== ''
+    ) {
       const boardParams: IBoardParams = {
         bombs: Number(bombValue),
         col: Number(colValue),
@@ -150,6 +159,7 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
         e.target.value,
       ),
     );
+
     setBombValid(true);
     setShowValidError(false);
     setColValue(e.target.value);
@@ -159,6 +169,7 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
     if (!Number(e.target.value) && e.target.value !== '') {
       return;
     }
+
     setRowValid(
       checkMinMaxValid(
         minMaxFormValues.rowMin,
@@ -166,6 +177,7 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
         e.target.value,
       ),
     );
+
     setBombValid(true);
     setShowValidError(false);
     setRowValue(e.target.value);
@@ -176,24 +188,18 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
     }
 
     setBombValid(
-      checkMinMaxValid(
-        minMaxFormValues.bombMin,
-        bombMax,
-        e.target.value,
-      ),
+      checkMinMaxValid(minMaxFormValues.bombMin, bombMax, e.target.value),
     );
+
     setShowValidError(false);
     setBombValue(e.target.value);
   };
 
   useEffect(() => {
-    // additinal valid bombs count ( 20% from countCells)
+    // additinal valid bombs count (20% from count cells)
     const countCells = Number(colValue) * Number(rowValue);
-    const newBombMax = Math.trunc(countCells * 0.20);
-    if (
-      newBombMax > minMaxFormValues.bombMax ||
-      newBombMax < 1
-    ) {
+    const newBombMax = Math.trunc(countCells * 0.2);
+    if (newBombMax > minMaxFormValues.bombMax || newBombMax < 1) {
       setBombMax(minMaxFormValues.bombMax);
       return;
     }
@@ -203,57 +209,55 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
   return (
     <CustomParamsModal>
       <OutClickZone onClick={() => setShowCustomParamsForm(false)} />
-      <Frame variant="form-outside">
-        <CustomParamsFormStyled
-          onSubmit={submitFormHandler}
-          onReset={resetFormHandler}
-        >
-          <TitleForm>Game options</TitleForm>
-          <GridTemplate>
-            <Label htmlFor="input-row">Width:</Label>
-            <Input
-              valid={rowValid}
-              type="text"
-              id="input-row"
-              value={rowValue}
-              onChange={rowInputHandler}
-            />
-            <Label>{`(min - ${minMaxFormValues.rowMin}, max - ${minMaxFormValues.rowMax})`}</Label>
+      <CustomParamsFormStyled
+        variantBorder="small-outside"
+        onSubmit={submitFormHandler}
+        onReset={resetFormHandler}
+      >
+        <TitleForm>Game options</TitleForm>
+        <GridTemplate>
+          <Label htmlFor="input-row">Width:</Label>
+          <Input
+            valid={rowValid}
+            type="text"
+            id="input-row"
+            value={rowValue}
+            onChange={rowInputHandler}
+          />
+          <Label>{`(min - ${minMaxFormValues.rowMin}, max - ${minMaxFormValues.rowMax})`}</Label>
 
-            <Label htmlFor="input-col">Height:</Label>
-            <Input
-              valid={colValid}
-              type="text"
-              id="input-col"
-              value={colValue}
-              onChange={colInputHandler}
-            />
-            <Label>{`(min - ${minMaxFormValues.colMin}, max - ${minMaxFormValues.colMax})`}</Label>
+          <Label htmlFor="input-col">Height:</Label>
+          <Input
+            valid={colValid}
+            type="text"
+            id="input-col"
+            value={colValue}
+            onChange={colInputHandler}
+          />
+          <Label>{`(min - ${minMaxFormValues.colMin}, max - ${minMaxFormValues.colMax})`}</Label>
 
-            <Label htmlFor="input-bomb">Bombs:</Label>
-            <Input
-              valid={bombValid}
-              type="text"
-              id="input-bomb"
-              value={bombValue}
-              onChange={bombInputHandler}
-            />
-            <Label>{`(min - ${minMaxFormValues.bombMin}, max - ${bombMax})`}</Label>
-          </GridTemplate>
+          <Label htmlFor="input-bomb">Bombs:</Label>
+          <Input
+            valid={bombValid}
+            type="text"
+            id="input-bomb"
+            value={bombValue}
+            onChange={bombInputHandler}
+          />
+          <Label>{`(min - ${minMaxFormValues.bombMin}, max - ${bombMax})`}</Label>
+        </GridTemplate>
 
-          <Control>
-            <Frame variant="form-outside">
-              <Button type="submit" value="New game" />
-            </Frame>
-            <Frame variant="form-outside">
-              <Button type="reset" value="Cancel" />
-            </Frame>
-            {showValidError && (
-              <LabelError>Check values</LabelError>
-            )}
-          </Control>
-        </CustomParamsFormStyled>
-      </Frame>
+        <Control>
+          <Button
+            variantBorder="small-outside"
+            type="submit"
+            value="New game"
+          />
+
+          <Button variantBorder="small-outside" type="reset" value="Cancel" />
+          {showValidError && <LabelError>Check values</LabelError>}
+        </Control>
+      </CustomParamsFormStyled>
     </CustomParamsModal>
   );
 }

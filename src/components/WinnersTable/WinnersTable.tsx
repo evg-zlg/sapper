@@ -6,8 +6,22 @@ import { useAppSelector } from '../../hooks/redux';
 import { ItemTable } from './ItemTable';
 import { TitleTable } from './TitleTable';
 import { IWinner } from '../../types/types';
+import { baseTheme } from '../../styles/theme';
+import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
 
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+  padding: 15px;
+  background-color: ${baseTheme.colors.bgPrimery};
+  ${BorderWithShadow};
+`;
+
+const Title = styled.h1`
+  margin: 0 0 20px 0;
+  text-align: center;
+  @media (${baseTheme.brakePoint.sm}) {
+    font-size: 1.5rem;
+  }
+`;
 
 const NoWinners = styled.h2`
   text-align: center;
@@ -37,15 +51,18 @@ function WinnersTable() {
   }, [winners]);
 
   return (
-    <Wrapper>
+    <Wrapper variantBorder="big-outside">
       {winners.length === 0 && <NoWinners>No saved results...</NoWinners>}
       {winners.length > 0 && (
-        <Table>
-          <TitleTable />
-          {winnersSort.map((winner, index) => (
-            <ItemTable key={winner.id} winner={winner} index={index + 1} />
-          ))}
-        </Table>
+        <>
+          <Title>Best results</Title>
+          <Table>
+            <TitleTable />
+            {winnersSort.map((winner, index) => (
+              <ItemTable key={winner.id} winner={winner} index={index + 1} />
+            ))}
+          </Table>
+        </>
       )}
     </Wrapper>
   );

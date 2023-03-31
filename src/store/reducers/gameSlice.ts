@@ -14,6 +14,7 @@ interface initialStateProps extends IGameParams {
   currentLevel: TLevelType;
   bombsLeft: number;
   timeLeft: number;
+  timerId: number;
 }
 
 const initialState: initialStateProps = {
@@ -23,6 +24,7 @@ const initialState: initialStateProps = {
   currentLevel: 'easy',
   bombsLeft: levels[0].bombs,
   timeLeft: 0,
+  timerId: 0,
 };
 
 export const gameSlice = createSlice({
@@ -57,6 +59,9 @@ export const gameSlice = createSlice({
     changeTimeleft(state, actions: PayloadAction<number>) {
       state.timeLeft = actions.payload;
     },
+    updateTimerId(state, actions: PayloadAction<number>) {
+      state.timerId = actions.payload;
+    },
   },
 });
 
@@ -69,6 +74,7 @@ export const {
   updateOneCell,
   changeBombsLeft,
   changeTimeleft,
+  updateTimerId,
 } = gameSlice.actions;
 
 export const gameState = gameSlice.reducer;

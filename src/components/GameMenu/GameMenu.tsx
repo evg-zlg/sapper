@@ -1,31 +1,40 @@
 import { useState } from 'react';
-
 import styled from 'styled-components';
-import { levels, menuButtons } from '../../const/const';
-import { TLevelType } from '../../types/types';
-import { getBoardParamsByLevelType } from '../GameBoard/utils';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { changeLevel, changePhase } from '../../store/reducers/gameSlice';
-import { Frame } from '../Frame';
+
+import { baseTheme } from '../../styles/theme';
+import { levels, menuButtons } from '../../const/const';
+import { TLevelType } from '../../types/types';
+import { getBoardParamsByLevelType } from '../../hooks/game/utils';
 import { CustomParamsForm } from './CustomParamsForm';
+import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
 
 const Menu = styled.menu`
-  margin: 0 auto;
+  margin: 0 auto 10px;
   width: fit-content;
   display: flex;
   gap: 20px;
+
+  @media (${baseTheme.brakePoint.sm}) {
+    gap: 10px;
+  }
 `;
 
 const Button = styled.button`
   padding: 5px 10px;
-  width: 70px;
+  min-width: 80px;
+  font-size: 1rem;
   text-transform: capitalize;
-  background-color: var(--bg-primery-color);
+  background-color: ${baseTheme.colors.bgPrimery};
   border: none;
   cursor: pointer;
-  > div {
-    border-width: 1px;
+  ${BorderWithShadow}
+
+  @media (${baseTheme.brakePoint.sm}) {
+    font-size: 0.75rem;
+    min-width: 70px;
   }
 `;
 
@@ -47,18 +56,16 @@ function GameMenu() {
   return (
     <Menu>
       {menuButtons.map((button) => (
-        <Frame key={button.text}
-          variant={
-            currentLevel === button.levelType ? 'form-inside' : 'form-outside'
+        <Button
+          key={button.text}
+          variantBorder={
+            currentLevel === button.levelType ? 'small-inside' : 'small-outside'
           }
+          type="button"
+          onClick={() => clickLevelHandle(button.levelType)}
         >
-          <Button
-            type="button"
-            onClick={() => clickLevelHandle(button.levelType)}
-          >
-            {button.text}
-          </Button>
-        </Frame>
+          {button.text}
+        </Button>
       ))}
       {showCustomParamsForm && (
         <CustomParamsForm setShowCustomParamsForm={setShowCustomParamsForm} />
