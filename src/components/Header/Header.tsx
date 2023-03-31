@@ -27,6 +27,10 @@ const Ul = styled.ul`
   gap: 10px;
 `;
 
+interface ILi {
+  active: boolean;
+}
+
 const Li = styled.li`
   list-style-type: none;
 
@@ -36,34 +40,15 @@ const Li = styled.li`
     color: inherit;
     padding: 5px 10px;
     border-radius: 3px;
-    transition: all 0.2s ease 0s;
+    transition: all 0.3s ease 0s;
     &:hover {
-      background-color: var(--bg-link-color);
+      background-color: var(--primary-accent-color);
+      color: var(--primary-light-color);
     }
 
     @media (max-width: 425px) {
       font-size: 1rem;
     }
-  }
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 3px;
-  border: none;
-  background-color: var(--primary-accent-color);
-  color: var(--primary-light-color);
-  font-size: 1.25rem;
-  transition: all 0.1s ease 0s;
-  &:hover {
-    box-shadow: 2px -2px 5px var(--shadow-light-color),
-      0px 2px 5px var(--shadow-light-color),
-      -2px 0px 5px var(--shadow-light-color);
-  }
-
-  @media (max-width: 425px) {
-    font-size: 1rem;
   }
 `;
 
@@ -80,7 +65,6 @@ function Header() {
               <Link to={APPRoute.winners}>Winners</Link>
             </Li>
           </Ul>
-          <Button type="button">Options and restart</Button>
         </Nav>
       </HeaderStyled>
     </Container>
