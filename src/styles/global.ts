@@ -12,7 +12,7 @@ html {
   height: 100%;
 }
 body {
-  background-color: ${baseTheme.colors.bgPrimery};
+  background-color: ${baseTheme.colors.bgBody};
   color: ${baseTheme.colors.darkPrimary};
   height: 100%;
   min-width: 320px;
