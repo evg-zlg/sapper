@@ -55,7 +55,7 @@ export const menuButtons: {levelType: TLevelType, text: string}[] = [
 
 export const minMaxFormValues = {
   colMin: 10,
-  colMax: 24,
+  colMax: 16,
   rowMin: 10,
   rowMax: 32,
   bombMin: 1,
