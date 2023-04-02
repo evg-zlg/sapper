@@ -2,6 +2,7 @@ import {
   ChangeEvent,
   Dispatch,
   FormEvent,
+  KeyboardEvent,
   SetStateAction,
   useEffect,
   useState,
@@ -15,7 +16,7 @@ import { baseTheme } from '../../styles/theme';
 import { IBoardParams, TLevelType } from '../../types/types';
 import { minMaxFormValues } from '../../const/const';
 import { checkMinMaxValid } from './utils';
-import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
+import { BorderWithShadow } from '../../styles/fragments/BorderWithShadow';
 
 const CustomParamsModal = styled.div`
   position: fixed;
@@ -195,6 +196,12 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
     setBombValue(e.target.value);
   };
 
+  const keyDownFormHandler = (e: KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Escape') {
+      setShowCustomParamsForm(false);
+    }
+  };
+
   useEffect(() => {
     // additinal valid bombs count (20% from count cells)
     const countCells = Number(colValue) * Number(rowValue);
@@ -213,6 +220,7 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
         variantBorder="small-outside"
         onSubmit={submitFormHandler}
         onReset={resetFormHandler}
+        onKeyDown={keyDownFormHandler}
       >
         <TitleForm>Game options</TitleForm>
         <GridTemplate>
@@ -223,6 +231,7 @@ function CustomParamsForm({ setShowCustomParamsForm }: ICustomParamsForm) {
             id="input-row"
             value={rowValue}
             onChange={rowInputHandler}
+            autoFocus
           />
           <Label>{`(min - ${minMaxFormValues.rowMin}, max - ${minMaxFormValues.rowMax})`}</Label>
 

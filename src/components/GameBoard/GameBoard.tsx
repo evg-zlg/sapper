@@ -5,7 +5,7 @@ import { Cell } from './Cell';
 import { ICell, TBorderShadowType } from '../../types/types';
 import { GamePanel } from './GamePanel';
 import { useGame } from './hooks/useGame';
-import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
+import { BorderWithShadow } from '../../styles/fragments/BorderWithShadow';
 
 const Board = styled.section`
   width: fit-content;

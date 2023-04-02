@@ -10,7 +10,7 @@ import { TBorderShadowType, TGamePhase } from '../../types/types';
 import smilePlayIcon from './icons/smile-play-icon.png';
 import smileWinIcon from './icons/smile-win-icon.png';
 import smileLostIcon from './icons/smile-lost-icon.png';
-import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
+import { BorderWithShadow } from '../../styles/fragments/BorderWithShadow';
 
 const Panel = styled.div`
   width: 100%;

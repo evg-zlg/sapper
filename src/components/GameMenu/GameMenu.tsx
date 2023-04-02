@@ -9,7 +9,7 @@ import { levels, menuButtons } from '../../const/const';
 import { TLevelType } from '../../types/types';
 import { getBoardParamsByLevelType } from '../GameBoard/hooks/utils';
 import { CustomParamsForm } from './CustomParamsForm';
-import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
+import { BorderWithShadow } from '../../styles/fragments/BorderWithShadow';
 
 const Menu = styled.menu`
   margin: 0 auto 10px;

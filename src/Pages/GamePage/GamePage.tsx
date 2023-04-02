@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Container } from '../../components/Container';
 import { GameBoard } from '../../components/GameBoard';
 import { GameMenu } from '../../components/GameMenu';
-import { Walpapper } from '../../styles/components/Walpapper';
+import { Walpapper } from '../../styles/fragments/Walpapper';
 
 const Main = styled.main`
   display: flex;

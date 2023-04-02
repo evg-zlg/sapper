@@ -7,7 +7,7 @@ import { ItemTable } from './ItemTable';
 import { TitleTable } from './TitleTable';
 import { IWinner } from '../../types/types';
 import { baseTheme } from '../../styles/theme';
-import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
+import { BorderWithShadow } from '../../styles/fragments/BorderWithShadow';
 
 const Wrapper = styled.section`
   padding: 15px;

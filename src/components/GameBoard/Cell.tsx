@@ -9,7 +9,7 @@ import bombIcon from './icons/bomb-icon.png';
 import wrongBomb from './icons/wrong-bomb-icon.png';
 import flagIcon from './icons/flag-icon.png';
 import questIcon from './icons/quest-icon.png';
-import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
+import { BorderWithShadow } from '../../styles/fragments/BorderWithShadow';
 
 interface ICellStyled {
   status: TCellStatus;
