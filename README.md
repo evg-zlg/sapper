@@ -21,7 +21,7 @@
 
 "Заминированную" ячейку можно поменить флагом. 
 
-Числа показывают, сколько соседних ячеек заминировано. 
+Числа показывают сколько соседних ячеек заминировано. 
 
 Удачи!
 
@@ -42,7 +42,7 @@
 ## Development
 Clone the repository, install the dependencies and start the application
 ```
-git clone [https://github.com/evg-zlg/sound-quiz.git](https://github.com/evg-zlg/sapper.git)
+git clone https://github.com/evg-zlg/sapper.git
 npm install
 npm run dev
 ```
