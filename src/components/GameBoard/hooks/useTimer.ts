@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { useAppDispatch, useAppSelector } from '../redux';
-import { changeTimeleft, updateTimerId } from '../../store/reducers/gameSlice';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { changeTimeleft, updateTimerId } from '../../../store/reducers/gameSlice';
 
 function useTimer() {
   const dispatch = useAppDispatch();

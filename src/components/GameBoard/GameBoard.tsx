@@ -4,7 +4,7 @@ import { baseTheme } from '../../styles/theme';
 import { Cell } from './Cell';
 import { ICell, TBorderShadowType } from '../../types/types';
 import { GamePanel } from './GamePanel';
-import { useGame } from '../../hooks/game/useGame';
+import { useGame } from './hooks/useGame';
 import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
 
 const Board = styled.section`
@@ -17,6 +17,14 @@ const Board = styled.section`
   align-items: stretch;
   background-color: ${baseTheme.colors.bgPrimery};
   ${BorderWithShadow}
+  @media (max-height: 767px) {
+    transform: scale(0.9);
+    margin: -10px auto 0;
+  }
+  @media (max-height: 720px) {
+    transform: scale(0.85);
+    margin: -30px auto 0;
+  }
 `;
 
 interface IGridTemplateProps {

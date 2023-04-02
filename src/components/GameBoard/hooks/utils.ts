@@ -1,10 +1,10 @@
-import { initCell } from '../../const/const';
+import { initCell } from '../../../const/const';
 import {
   IBoardParams,
   ICell,
   TCellStatus,
   TLevelType,
-} from '../../types/types';
+} from '../../../types/types';
 
 function addBombsInArray(
   source: ICell[],

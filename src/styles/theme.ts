@@ -6,6 +6,7 @@ const baseTheme = {
     borderPrimary: 'rgb(241, 241, 241)',
     borderSecondary: 'rgb(80, 80, 80)',
     borderCell: 'rgb(115, 115, 115)',
+    bgBody: '#3b6ea5',
     bgPrimery: 'rgb(192, 192, 192)',
     bgModal: '#00000090',
     digitPrimery: 'rgb(173, 4, 4)',

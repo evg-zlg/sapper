@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useAppDispatch, useAppSelector } from '../redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import {
   changeBombsLeft,
   changeCells,
@@ -8,7 +8,7 @@ import {
   changeTimeleft,
   selectState,
   updateOneCell,
-} from '../../store/reducers/gameSlice';
+} from '../../../store/reducers/gameSlice';
 
 import {
   checkVictory,
@@ -20,9 +20,9 @@ import {
   openBombsAfterLost,
   openCellsAfterWin,
 } from './utils';
-import { ICell, IWinner } from '../../types/types';
+import { ICell, IWinner } from '../../../types/types';
 import { useTimer } from './useTimer';
-import { addWinner } from '../../store/reducers/winnersSlice';
+import { addWinner } from '../../../store/reducers/winnersSlice';
 
 function useGame() {
   const dispatch = useAppDispatch();

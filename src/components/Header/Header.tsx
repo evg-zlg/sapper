@@ -8,7 +8,12 @@ import { Container } from '../Container';
 const HeaderStyled = styled.header`
   padding: 0 5px;
   height: 80px;
-  border-bottom: 1px solid ${baseTheme.colors.accentPrimary};
+  @media (max-height: 855px) {
+    height: 60px;
+  }
+  @media (max-height: 796px) {
+    height: 40px;
+  }
 `;
 
 const Nav = styled.nav`

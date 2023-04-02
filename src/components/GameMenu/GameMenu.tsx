@@ -7,7 +7,7 @@ import { changeLevel, changePhase } from '../../store/reducers/gameSlice';
 import { baseTheme } from '../../styles/theme';
 import { levels, menuButtons } from '../../const/const';
 import { TLevelType } from '../../types/types';
-import { getBoardParamsByLevelType } from '../../hooks/game/utils';
+import { getBoardParamsByLevelType } from '../GameBoard/hooks/utils';
 import { CustomParamsForm } from './CustomParamsForm';
 import { BorderWithShadow } from '../../styles/components/BorderWithShadow';
 
